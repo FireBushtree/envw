@@ -1,0 +1,62 @@
+@contentWidth: 1200px;
+
+.login {
+  height: 100vh;
+  background: url('./images/bg-login.png');
+  background-size: cover;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  width: 100%;
+  background: url('./images/bg-header.png');
+  background-size: cover;
+  top: 5%;
+  height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+}
+
+.content {
+  width: @contentWidth;
+  background: url('./images/bg-form.png');
+  background-size: cover;
+  height: 545px;
+  display: flex;
+  justify-content: flex-end;
+
+  .qw-entry-wrap {
+    position: absolute;
+    right: -40px;
+    top: 400px;
+  }
+}
+
+.footer {
+  height: 67px;
+  bottom: 5%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+
+  .textWrapper {
+    width: @contentWidth;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-family: Microsoft YaHei UI;
+    font-weight: 400;
+    color: rgba(34, 34, 34, 1);
+    line-height: 24px;
+    opacity: 0.8;
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "wind",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "father-build"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.49",
+    "babel-plugin-import": "^1.13.0",
+    "father-build": "1.18.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.2.2",
+    "@types/md5": "^2.2.0",
+    "ahooks": "^2.6.0",
+    "antd": "^4.6.4",
+    "axios": "^0.20.0",
+    "md5": "^2.3.0",
+    "number-flip": "^1.1.8"
+  }
+}

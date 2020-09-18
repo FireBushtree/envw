@@ -1,0 +1,67 @@
+.table {
+  :global {
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 0;
+    }
+    .ant-table {
+      margin: 10px 5px 0 5px;
+      background-color: transparent;
+      .ant-table-header,
+      .ant-table-thead {
+        border: 1px solid #03c6fb;
+        .ant-table-cell {
+          color: #02f6ff;
+          background: #07262e;
+          position: relative;
+          padding: 6px 0 6px 1px;
+          border: none;
+          font-weight: bold;
+          &:after {
+            height: 16px;
+            content: ' ';
+            border-right: 1px dashed #00dbfb;
+            right: 0;
+            position: absolute;
+            top: 50%;
+            margin-top: -8px;
+          }
+          &:last-child {
+            &::after {
+              display: none;
+            }
+          }
+        }
+      }
+      .ant-table-tbody {
+        .ant-table-placeholder:hover {
+          > .ant-table-cell {
+            background: transparent;
+          }
+        }
+        .ant-table-placeholder {
+          > .ant-table-cell {
+            background: transparent;
+            border: none;
+          }
+        }
+        .ant-table-row {
+          background-image: url('./images/line.png');
+          background-repeat: no-repeat;
+          background-size: 100% 1px;
+          background-position: bottom;
+          .ant-table-cell {
+            padding: 8px 0;
+            color: #f6fafb;
+            border-bottom: none;
+          }
+          &:hover {
+            .ant-table-cell {
+              background-color: transparent;
+            }
+          }
+        }
+      }
+    }
+  }
+}
