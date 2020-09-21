@@ -1,5 +1,5 @@
 import * as React from 'react'
-import LoginForm, { User } from '@/src/Login/_utils/LoginForm'
+import LoginForm, { User } from 'components/Login/_utils/LoginForm'
 import './index.less'
 
 export interface SuperviseProps {

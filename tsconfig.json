@@ -2,8 +2,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "wind": ["src/index.tsx"],
-      "@/src/*": ["src/*"]
+      "wind": ["components/index.tsx"],
+      "@/src/*": ["components/*"]
     },
     "declaration": true,
     "moduleResolution": "node",
