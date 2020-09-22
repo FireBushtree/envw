@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "dumi dev",
-    "build": "father-build"
+    "build": "father-build && node script/remove-demo.js"
   },
   "peerDependencies": {
     "react": ">=16.9.0",
