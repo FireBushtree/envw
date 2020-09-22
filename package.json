@@ -23,6 +23,7 @@
     "babel-plugin-module-resolver": "^4.0.0",
     "dumi": "^1.0.34",
     "father-build": "1.18.4",
+    "prettier": "2.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "ttypescript": "^1.5.12",

@@ -1,0 +1,4 @@
+**/*.md
+package.json
+lib
+es
