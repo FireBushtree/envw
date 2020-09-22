@@ -1,6 +1,6 @@
 import * as React from 'react'
 import './index.less'
-import LoginForm from '../_utils/LoginForm'
+import LoginForm from '@/src/Login/_utils/LoginForm'
 
 export interface FuzzyProps {
   onFinish: (value: any) => any

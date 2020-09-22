@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginForm, { OnFinish } from '../_utils/LoginForm'
+import LoginForm, { OnFinish } from '@/src/Login/_utils/LoginForm'
 import './index.less'
 
 export interface SimpleProps {

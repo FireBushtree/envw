@@ -5,7 +5,7 @@ import GVerify from '../Gverify'
 import { useMount } from 'ahooks'
 import { message } from 'antd'
 import md5 from 'md5'
-import { login, LoginRes, syncToken } from '../../../_utils/service/auth'
+import { login, LoginRes, syncToken } from '@/src/_utils/service/auth'
 import {
   LockOutlined,
   SafetyCertificateOutlined,
