@@ -2,13 +2,24 @@
   "name": "wind",
   "version": "1.0.0",
   "main": "lib/index.js",
+  "module": "es/index.js",
+  "description": "Envcloud frontend accumulation",
   "license": "MIT",
   "scripts": {
     "build": "father-build"
   },
+  "peerDependencies": {
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
+  },
+  "files": [
+    "lib",
+    "es"
+  ],
   "devDependencies": {
     "@types/react": "^16.9.49",
     "babel-plugin-import": "^1.13.0",
+    "babel-plugin-module-resolver": "^4.0.0",
     "father-build": "1.18.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

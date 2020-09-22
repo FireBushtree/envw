@@ -196,7 +196,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
 LoginForm.defaultProps = {
   showFormLabel: true,
   showFormIcon: false,
-  // title: <img src={iconUser} alt="user" />,
+  title: <img src={require('./images/icon-user.png')} alt="user" />,
   loginButton: defaultLoginButtonProps,
   theme: 'base',
 }

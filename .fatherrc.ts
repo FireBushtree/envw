@@ -1,13 +1,9 @@
-import path from 'path'
-
 export default {
   esm: {
     type: 'babel',
     importLibToEs: true
   },
   cjs: 'babel',
-  extraRollupPlugins: [
-  ],
   extraBabelPlugins: [
     [
       'import',
@@ -15,6 +11,15 @@ export default {
         libraryName: 'antd',
         libraryDirectory: 'es',
         style: true
+      }
+    ],
+    [
+      'module-resolver',
+      {
+        root: ['./src'],
+        alias: {
+          '@/src': './src'
+        }
       }
     ]
   ]
