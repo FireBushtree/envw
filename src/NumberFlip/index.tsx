@@ -14,7 +14,7 @@ export interface NumberFlipProps {
   duration?: number;
 }
 
-const NumberFlip: React.FC<NumberFlipProps> = (props) => {
+const NumberFlip: React.FC<NumberFlipProps> = props => {
   let { zero } = props;
   (zero === undefined || zero === null) && (zero = true);
 
@@ -77,4 +77,4 @@ const NumberFlip: React.FC<NumberFlipProps> = (props) => {
   );
 };
 
-export default NumberFlip
+export default NumberFlip;

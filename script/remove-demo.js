@@ -1,13 +1,13 @@
-const rimraf = require('rimraf')
+const rimraf = require('rimraf');
 
 const remove = (filePath, name) => {
-  rimraf(filePath, {}, (error) => {
+  rimraf(filePath, {}, error => {
     if (error) {
-      console.log(error)
+      console.log(error);
     }
-    console.log(`remove ${name} demo folder success`)
-  })
-}
+    console.log(`remove ${name} demo folder success`);
+  });
+};
 
-remove('lib/**/demo', 'lib')
-remove('es/**/demo', 'es')
+remove('lib/**/demo', 'lib');
+remove('es/**/demo', 'es');

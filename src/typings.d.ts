@@ -1,2 +1,2 @@
-declare module '*.png'
-declare module 'number-flip'
+declare module '*.png';
+declare module 'number-flip';

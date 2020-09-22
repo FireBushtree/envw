@@ -1,14 +1,14 @@
 import * as React from 'react';
 import './index.less';
 import { Table } from 'antd';
-import { TableProps } from 'antd/lib/table/Table'
+import { TableProps } from 'antd/lib/table/Table';
 
 export interface WindTableProps extends TableProps<any> {
   autoScroll?: boolean;
   reachBottom?: (event: Event) => any;
 }
 
-const WindTable: React.FC<WindTableProps> = (props) => {
+const WindTable: React.FC<WindTableProps> = props => {
   const { dataSource } = props;
   const ref = React.useRef<HTMLDivElement>(null);
   let timer: any = null;
@@ -99,12 +99,8 @@ const WindTable: React.FC<WindTableProps> = (props) => {
 
 WindTable.defaultProps = {
   locale: {
-    emptyText: (
-      <div style={{ color: '#00dbfb', height: 100, lineHeight: '100px' }}>
-        暂无数据
-      </div>
-    ),
+    emptyText: <div style={{ color: '#00dbfb', height: 100, lineHeight: '100px' }}>暂无数据</div>,
   },
 };
 
-export default WindTable
+export default WindTable;

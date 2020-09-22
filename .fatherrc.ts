@@ -1,7 +1,7 @@
 export default {
   esm: {
     type: 'babel',
-    importLibToEs: true
+    importLibToEs: true,
   },
   cjs: 'babel',
   extraBabelPlugins: [
@@ -10,17 +10,17 @@ export default {
       {
         libraryName: 'antd',
         libraryDirectory: 'es',
-        style: true
-      }
+        style: true,
+      },
     ],
     [
       'module-resolver',
       {
         root: ['./src'],
         alias: {
-          '@/src': './src'
-        }
-      }
-    ]
-  ]
+          '@/src': './src',
+        },
+      },
+    ],
+  ],
 };

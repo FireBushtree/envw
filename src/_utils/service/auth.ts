@@ -42,17 +42,20 @@ export interface LoginRes {
  * 登录接口
  * @param data
  */
-export const login = (data: LoginReq, params?: { tenantId: string }) => post<LoginRes>('/cas/login', data, { params });
+export const login = (data: LoginReq, params?: { tenantId: string }) =>
+  post<LoginRes>('/cas/login', data, { params });
 
-export const syncToken = (access_token: string) => get('/cloud/zszy/prd/api/user/syncToken', { access_token })
+export const syncToken = (access_token: string) =>
+  get('/cloud/zszy/prd/api/user/syncToken', { access_token });
 
 export interface GetMenuReq {
-  userId: string
-  tenantId: string
-  systemCode: string
+  userId: string;
+  tenantId: string;
+  systemCode: string;
 }
 
-export const getMenu = (data: GetMenuReq) => get<string>('/cloud/management/util/getMenuJson.sa', data)
+export const getMenu = (data: GetMenuReq) =>
+  get<string>('/cloud/management/util/getMenuJson.sa', data);
 
 /**
  * 退出登录

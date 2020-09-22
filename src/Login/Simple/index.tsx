@@ -1,12 +1,12 @@
-import React from 'react'
-import LoginForm, { OnFinish } from '@/src/Login/_utils/LoginForm'
-import './index.less'
+import React from 'react';
+import LoginForm, { OnFinish } from '@/src/Login/_utils/LoginForm';
+import './index.less';
 
 export interface SimpleProps {
-  onFinish: OnFinish
+  onFinish: OnFinish;
 }
 
-const Simple: React.FC<SimpleProps> = (props) => {
+const Simple: React.FC<SimpleProps> = props => {
   return (
     <div className="qw-simple">
       <div className="qw-simple-form">
@@ -14,7 +14,7 @@ const Simple: React.FC<SimpleProps> = (props) => {
           onFinish={props.onFinish}
           loginButton={{
             align: 'right',
-            className: 'qw-simple-form-login-button'
+            className: 'qw-simple-form-login-button',
           }}
           className="qw-simple-form-content"
           showFormLabel={false}
@@ -22,7 +22,7 @@ const Simple: React.FC<SimpleProps> = (props) => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Simple
+export default Simple;

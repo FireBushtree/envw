@@ -1,5 +1,5 @@
 interface GverifyOptions {
-  containerId: string,
+  containerId: string;
 }
 
 function randomNum(min: number, max: number) {
@@ -13,74 +13,73 @@ function randomColor(min: number, max: number) {
   return 'rgb(' + r + ',' + g + ',' + b + ')';
 }
 
-const numberArray = ['0', '1', '2', '3', '4','5','6','7','8','9']
-const INIT_WIDTH = 100
-const INIT_HEIGHT = 30
+const numberArray = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const INIT_WIDTH = 100;
+const INIT_HEIGHT = 30;
 
 class Gverify {
-  code: string
-  width: number
-  height: number
-  containerId: string
-  canvas: HTMLCanvasElement | null
+  code: string;
+  width: number;
+  height: number;
+  containerId: string;
+  canvas: HTMLCanvasElement | null;
 
   constructor(option: GverifyOptions) {
-    this.width = INIT_WIDTH
-    this.height = INIT_HEIGHT
-    this.canvas = null
-    this.code = ''
-    this.containerId = option.containerId
+    this.width = INIT_WIDTH;
+    this.height = INIT_HEIGHT;
+    this.canvas = null;
+    this.code = '';
+    this.containerId = option.containerId;
 
-    this.init()
-    this.refresh()
+    this.init();
+    this.refresh();
   }
 
   init() {
-    const container = document.getElementById(this.containerId)
+    const container = document.getElementById(this.containerId);
 
     if (!container) {
-      return
+      return;
     }
 
     // 重置宽高
-    const { offsetWidth, offsetHeight } = container
-    this.width = offsetWidth || INIT_WIDTH
-    this.height = offsetHeight || INIT_HEIGHT
+    const { offsetWidth, offsetHeight } = container;
+    this.width = offsetWidth || INIT_WIDTH;
+    this.height = offsetHeight || INIT_HEIGHT;
 
-    const canvas = document.createElement('canvas')
-    canvas.id = this.containerId
-    canvas.width = this.width
-    canvas.height = this.height
+    const canvas = document.createElement('canvas');
+    canvas.id = this.containerId;
+    canvas.width = this.width;
+    canvas.height = this.height;
     canvas.style.cursor = 'pointer';
     canvas.innerHTML = '您的浏览器版本不支持canvas';
     container.appendChild(canvas);
     canvas.onclick = () => {
-      this.refresh()
-    }
+      this.refresh();
+    };
 
-    this.canvas = canvas
+    this.canvas = canvas;
   }
 
   refresh() {
-    this.code = ''
-    const { canvas } = this
+    this.code = '';
+    const { canvas } = this;
 
     if (!canvas || !canvas.getContext) {
-      return
+      return;
     }
 
-    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
-    ctx.textBaseline = 'middle'
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    ctx.textBaseline = 'middle';
     ctx.fillStyle = randomColor(180, 240);
     ctx.fillRect(0, 0, this.width, this.height);
 
-    const textArray = numberArray
+    const textArray = numberArray;
 
     for (var i = 1; i <= 4; i++) {
       const text = textArray[randomNum(0, textArray.length)];
       this.code += text;
-      ctx.font =
-        randomNum(this.height / 2, this.height) + 'px SimHei'; //随机生成字体大小
+      ctx.font = randomNum(this.height / 2, this.height) + 'px SimHei'; //随机生成字体大小
       ctx.fillStyle = randomColor(20, 100); //随机生成字体颜色
       ctx.shadowOffsetX = randomNum(-3, 3);
       ctx.shadowOffsetY = randomNum(-3, 3);
@@ -101,27 +100,15 @@ class Gverify {
     for (var i = 0; i < 4; i++) {
       ctx.strokeStyle = randomColor(40, 180);
       ctx.beginPath();
-      ctx.moveTo(
-        randomNum(0, this.width),
-        randomNum(0, this.height),
-      );
-      ctx.lineTo(
-        randomNum(0, this.width),
-        randomNum(0, this.height),
-      );
+      ctx.moveTo(randomNum(0, this.width), randomNum(0, this.height));
+      ctx.lineTo(randomNum(0, this.width), randomNum(0, this.height));
       ctx.stroke();
     }
 
     for (var i = 0; i < this.width / 4; i++) {
       ctx.fillStyle = randomColor(0, 255);
       ctx.beginPath();
-      ctx.arc(
-        randomNum(0, this.width),
-        randomNum(0, this.height),
-        1,
-        0,
-        2 * Math.PI,
-      );
+      ctx.arc(randomNum(0, this.width), randomNum(0, this.height), 1, 0, 2 * Math.PI);
       ctx.fill();
     }
   }
@@ -138,4 +125,4 @@ class Gverify {
   }
 }
 
-export default Gverify
+export default Gverify;

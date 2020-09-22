@@ -5,7 +5,7 @@ export interface ScrollWrapperProps {
   height: string;
 }
 
-const ScrollWrapper: React.FC<ScrollWrapperProps> = (props) => {
+const ScrollWrapper: React.FC<ScrollWrapperProps> = props => {
   let timer: any = null;
   const clearTimer = () => {
     if (timer) {
@@ -61,4 +61,4 @@ const ScrollWrapper: React.FC<ScrollWrapperProps> = (props) => {
   );
 };
 
-export default ScrollWrapper
+export default ScrollWrapper;

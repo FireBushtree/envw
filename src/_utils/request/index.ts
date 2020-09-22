@@ -12,7 +12,7 @@ export interface Response<T> {
 }
 
 interface Option {
-  params?: any
+  params?: any;
 }
 
 function request<T>(url: string, type: Method, data?: any, option?: Option) {

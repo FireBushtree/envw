@@ -1,92 +1,86 @@
-import React from 'react'
-import { Form, Input, Button, Col, Row, Spin } from 'antd'
-import './index.less'
-import GVerify from '../Gverify'
-import { useMount } from 'ahooks'
-import { message } from 'antd'
-import md5 from 'md5'
-import { login, LoginRes, syncToken } from '@/src/_utils/service/auth'
-import {
-  LockOutlined,
-  SafetyCertificateOutlined,
-  UserOutlined,
-} from '@ant-design/icons'
+import React from 'react';
+import { Form, Input, Button, Col, Row, Spin } from 'antd';
+import './index.less';
+import GVerify from '../Gverify';
+import { useMount } from 'ahooks';
+import { message } from 'antd';
+import md5 from 'md5';
+import { login, LoginRes, syncToken } from '@/src/_utils/service/auth';
+import { LockOutlined, SafetyCertificateOutlined, UserOutlined } from '@ant-design/icons';
 
-export type User = LoginRes & { accessToken: string }
+export type User = LoginRes & { accessToken: string };
 
-export type OnFinish = (value: User) => any
+export type OnFinish = (value: User) => any;
 
 interface LoginButtonProps {
-  className?: string
-  type?: 'img' | 'button'
-  align?: 'left' | 'right'
+  className?: string;
+  type?: 'img' | 'button';
+  align?: 'left' | 'right';
 }
 
 export interface LoginFormProps {
-  theme?: 'base' | 'line'
-  className?: string
-  showFormIcon?: boolean
-  showFormLabel?: boolean
-  title?: React.ReactElement | string
-  onFinish?: OnFinish
-  loginButton?: LoginButtonProps
+  theme?: 'base' | 'line';
+  className?: string;
+  showFormIcon?: boolean;
+  showFormLabel?: boolean;
+  title?: React.ReactElement | string;
+  onFinish?: OnFinish;
+  loginButton?: LoginButtonProps;
 }
 
 const defaultLoginButtonProps = {
   type: 'button',
   align: 'left',
-} as LoginButtonProps
+} as LoginButtonProps;
 
-const LoginForm: React.FC<LoginFormProps> = (props) => {
-  const [captcha, setCaptcha] = React.useState({} as GVerify)
-  const [loginning, setLoginning] = React.useState(false)
+const LoginForm: React.FC<LoginFormProps> = props => {
+  const [captcha, setCaptcha] = React.useState({} as GVerify);
+  const [loginning, setLoginning] = React.useState(false);
 
   useMount(() => {
     const captcha = new GVerify({
       containerId: 'captcha',
-    })
-    setCaptcha(captcha)
-  })
+    });
+    setCaptcha(captcha);
+  });
 
-  let { loginButton = {} } = props
+  let { loginButton = {} } = props;
   loginButton = {
     ...defaultLoginButtonProps,
     ...loginButton,
-  }
+  };
 
   const onFinish = async (values: any) => {
-    let res = undefined
+    let res = undefined;
     try {
-      setLoginning(true)
+      setLoginning(true);
       res = await login({
         username: values.username,
         password: md5(values.password),
-      })
+      });
     } catch {
-      message.error('用户名或密码错误')
-      return
+      message.error('用户名或密码错误');
+      return;
     } finally {
-      setLoginning(false)
+      setLoginning(false);
     }
 
-    const tokenStr = res.headers['access-token']
-    const token = JSON.parse(tokenStr)
+    const tokenStr = res.headers['access-token'];
+    const token = JSON.parse(tokenStr);
 
     // 同步token
-    syncToken(token.access_token)
+    syncToken(token.access_token);
 
-    const userInfo = { ...res.data, accessToken: token.access_token }
+    const userInfo = { ...res.data, accessToken: token.access_token };
 
     // 执行回调函数
-    const { onFinish } = props
-    onFinish && onFinish(userInfo)
-  }
+    const { onFinish } = props;
+    onFinish && onFinish(userInfo);
+  };
 
   return (
     <Spin
-      wrapperClassName={`qw-login-form-wrap ${
-        props.theme === 'line' ? 'is-theme-line' : ''
-      }`}
+      wrapperClassName={`qw-login-form-wrap ${props.theme === 'line' ? 'is-theme-line' : ''}`}
       spinning={loginning}
     >
       <div className={`${props.className || ''} qw-login-form`}>
@@ -104,8 +98,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
             rules={[{ required: true, message: '请输入用户名' }]}
           >
             <Input
-              prefix={
-              props.showFormIcon &&<UserOutlined className="qw-form-item-icon" />}
+              prefix={props.showFormIcon && <UserOutlined className="qw-form-item-icon" />}
               placeholder="请输入用户名"
             />
           </Form.Item>
@@ -117,8 +110,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
             rules={[{ required: true, message: '请输入密码' }]}
           >
             <Input.Password
-              prefix={
-              props.showFormIcon &&<LockOutlined className="qw-form-item-icon" />}
+              prefix={props.showFormIcon && <LockOutlined className="qw-form-item-icon" />}
               placeholder="请输入密码"
             />
           </Form.Item>
@@ -132,9 +124,9 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
               {
                 validator: (rule, value) => {
                   if (value && captcha.validate(value)) {
-                    return Promise.resolve()
+                    return Promise.resolve();
                   } else {
-                    return Promise.reject('验证码错误')
+                    return Promise.reject('验证码错误');
                   }
                 },
                 validateTrigger: 'onSubmit',
@@ -145,26 +137,20 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
               <Col span={12}>
                 <Input
                   prefix={
-                    props.showFormIcon &&
-                    <SafetyCertificateOutlined className="qw-form-item-icon" />
+                    props.showFormIcon && (
+                      <SafetyCertificateOutlined className="qw-form-item-icon" />
+                    )
                   }
                   placeholder="请输入验证码"
                 />
               </Col>
               <Col offset={4} span={8}>
-                <div
-                  style={{ width: '100%', height: '32px' }}
-                  id="captcha"
-                ></div>
+                <div style={{ width: '100%', height: '32px' }} id="captcha"></div>
               </Col>
             </Row>
           </Form.Item>
 
-          <Form.Item
-            className={`${
-              loginButton.align === 'right' ? 'is-right' : ''
-            } qw-entry-wrap`}
-          >
+          <Form.Item className={`${loginButton.align === 'right' ? 'is-right' : ''} qw-entry-wrap`}>
             {loginButton.type === 'img' && (
               <Button
                 className={`${loginButton.className} qw-login-button qw-img-entry`}
@@ -185,13 +171,11 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
             )}
           </Form.Item>
         </Form>
-        <div className="qw-login-form-footer">
-          Copyright © 2020 环境云版权所有保留一切权利
-        </div>
+        <div className="qw-login-form-footer">Copyright © 2020 环境云版权所有保留一切权利</div>
       </div>
     </Spin>
-  )
-}
+  );
+};
 
 LoginForm.defaultProps = {
   showFormLabel: true,
@@ -199,6 +183,6 @@ LoginForm.defaultProps = {
   title: <img src={require('./images/icon-user.png')} alt="user" />,
   loginButton: defaultLoginButtonProps,
   theme: 'base',
-}
+};
 
-export default LoginForm
+export default LoginForm;
