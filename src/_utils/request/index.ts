@@ -1,5 +1,5 @@
-import { getUrlParam } from '../common';
 import axios, { Method, AxiosResponse, AxiosRequestConfig } from 'axios';
+import { getUrlParam } from '../common';
 import { getAccessTokenFromStorage } from '../auth';
 
 export interface Response<T> {
@@ -49,7 +49,8 @@ function request<T>(url: string, type: Method, data?: any, option?: Option) {
           reject(res.data);
         }
       })
-      .catch(err => reject(err));
+      .catch((err) =>
+        reject(err));
   });
 }
 
@@ -66,4 +67,6 @@ function put<T>(url: string, data?: any, option?: Option) {
   return request<T>(url, 'PUT', data, option);
 }
 
-export { get, post, del, put };
+export {
+  get, post, del, put,
+};

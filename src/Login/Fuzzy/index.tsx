@@ -6,8 +6,8 @@ export interface FuzzyProps {
   onFinish: (value: any) => any;
 }
 
-const Fuzzy: React.FC<FuzzyProps> = props => {
-  return (
+const Fuzzy: React.FC<FuzzyProps> = (props) =>
+  (
     <div className="login">
       <div className="header">
         <img src={require('./images/text-header.png')} alt="text" />
@@ -23,6 +23,5 @@ const Fuzzy: React.FC<FuzzyProps> = props => {
       </div>
     </div>
   );
-};
 
 export default Fuzzy;

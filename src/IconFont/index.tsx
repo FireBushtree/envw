@@ -5,8 +5,9 @@ export interface IconFontProps {
   fontSize?: number;
 }
 
-const IconFont: React.FC<IconFontProps> = props => {
-  return <span style={{ fontSize: props.fontSize }} className={`iconfont ${props.name}`}></span>;
+const IconFont: React.FC<IconFontProps> = (props) => {
+  const { fontSize, name } = props;
+  return <span style={{ fontSize }} className={`iconfont ${name}`} />;
 };
 
 export default IconFont;

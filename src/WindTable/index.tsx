@@ -8,7 +8,7 @@ export interface WindTableProps extends TableProps<any> {
   reachBottom?: (event: Event) => any;
 }
 
-const WindTable: React.FC<WindTableProps> = props => {
+const WindTable: React.FC<WindTableProps> = (props) => {
   const { dataSource } = props;
   const ref = React.useRef<HTMLDivElement>(null);
   let timer: any = null;
@@ -78,7 +78,7 @@ const WindTable: React.FC<WindTableProps> = props => {
     }
 
     // 添加滚动监听事件
-    wrapper.addEventListener('scroll', e => {
+    wrapper.addEventListener('scroll', (e) => {
       const { reachBottom } = props;
       if (wrapper.scrollTop + wrapper.clientHeight === tbody.scrollHeight) {
         reachBottom && reachBottom(e);

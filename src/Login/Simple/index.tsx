@@ -6,8 +6,8 @@ export interface SimpleProps {
   onFinish: OnFinish;
 }
 
-const Simple: React.FC<SimpleProps> = props => {
-  return (
+const Simple: React.FC<SimpleProps> = (props) =>
+  (
     <div className="qw-simple">
       <div className="qw-simple-form">
         <LoginForm
@@ -23,6 +23,5 @@ const Simple: React.FC<SimpleProps> = props => {
       </div>
     </div>
   );
-};
 
 export default Simple;

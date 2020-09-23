@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Flip } from 'number-flip';
 
 const formatVal = (num: number) => {
-  const val = parseInt(num * 100 + '');
+  const val = parseInt(`${num * 100}`);
   return val;
 };
 
@@ -14,7 +14,7 @@ export interface NumberFlipProps {
   duration?: number;
 }
 
-const NumberFlip: React.FC<NumberFlipProps> = props => {
+const NumberFlip: React.FC<NumberFlipProps> = (props) => {
   let { zero } = props;
   (zero === undefined || zero === null) && (zero = true);
 
@@ -48,7 +48,7 @@ const NumberFlip: React.FC<NumberFlipProps> = props => {
       seperateOnly: 0,
     };
 
-    let val = value + '';
+    const val = `${value}`;
     const isFloat = val.includes('.');
 
     if (isFloat) {
@@ -67,12 +67,13 @@ const NumberFlip: React.FC<NumberFlipProps> = props => {
       }, 5000);
     }
 
-    return () => clearTimer();
+    return () =>
+      clearTimer();
   }, [value]);
 
   return (
     <div className={props.className} style={props.style}>
-      {typeof props.value === 'number' ? <div ref={ref}></div> : 0}
+      {typeof props.value === 'number' ? <div ref={ref} /> : 0}
     </div>
   );
 };

@@ -1,12 +1,14 @@
 import React from 'react';
-import { Form, Input, Button, Col, Row, Spin } from 'antd';
+import {
+  message, Form, Input, Button, Col, Row, Spin,
+} from 'antd';
 import './index.less';
-import GVerify from '../Gverify';
 import { useMount } from 'ahooks';
-import { message } from 'antd';
+
 import md5 from 'md5';
 import { login, LoginRes, syncToken } from '@/src/_utils/service/auth';
 import { LockOutlined, SafetyCertificateOutlined, UserOutlined } from '@ant-design/icons';
+import GVerify from '../Gverify';
 
 export type User = LoginRes & { accessToken: string };
 
@@ -33,7 +35,7 @@ const defaultLoginButtonProps = {
   align: 'left',
 } as LoginButtonProps;
 
-const LoginForm: React.FC<LoginFormProps> = props => {
+const LoginForm: React.FC<LoginFormProps> = (props) => {
   const [captcha, setCaptcha] = React.useState({} as GVerify);
   const [loginning, setLoginning] = React.useState(false);
 
@@ -51,7 +53,7 @@ const LoginForm: React.FC<LoginFormProps> = props => {
   };
 
   const onFinish = async (values: any) => {
-    let res = undefined;
+    let res;
     try {
       setLoginning(true);
       res = await login({
@@ -125,9 +127,8 @@ const LoginForm: React.FC<LoginFormProps> = props => {
                 validator: (rule, value) => {
                   if (value && captcha.validate(value)) {
                     return Promise.resolve();
-                  } else {
-                    return Promise.reject('验证码错误');
                   }
+                  return Promise.reject('验证码错误');
                 },
                 validateTrigger: 'onSubmit',
               },
@@ -145,7 +146,7 @@ const LoginForm: React.FC<LoginFormProps> = props => {
                 />
               </Col>
               <Col offset={4} span={8}>
-                <div style={{ width: '100%', height: '32px' }} id="captcha"></div>
+                <div style={{ width: '100%', height: '32px' }} id="captcha" />
               </Col>
             </Row>
           </Form.Item>

@@ -7,10 +7,10 @@ function randomNum(min: number, max: number) {
 }
 
 function randomColor(min: number, max: number) {
-  var r = randomNum(min, max);
-  var g = randomNum(min, max);
-  var b = randomNum(min, max);
-  return 'rgb(' + r + ',' + g + ',' + b + ')';
+  const r = randomNum(min, max);
+  const g = randomNum(min, max);
+  const b = randomNum(min, max);
+  return `rgb(${r},${g},${b})`;
 }
 
 const numberArray = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -19,9 +19,13 @@ const INIT_HEIGHT = 30;
 
 class Gverify {
   code: string;
+
   width: number;
+
   height: number;
+
   containerId: string;
+
   canvas: HTMLCanvasElement | null;
 
   constructor(option: GverifyOptions) {
@@ -79,20 +83,20 @@ class Gverify {
     for (var i = 1; i <= 4; i++) {
       const text = textArray[randomNum(0, textArray.length)];
       this.code += text;
-      ctx.font = randomNum(this.height / 2, this.height) + 'px SimHei'; //随机生成字体大小
-      ctx.fillStyle = randomColor(20, 100); //随机生成字体颜色
+      ctx.font = `${randomNum(this.height / 2, this.height)}px SimHei`; // 随机生成字体大小
+      ctx.fillStyle = randomColor(20, 100); // 随机生成字体颜色
       ctx.shadowOffsetX = randomNum(-3, 3);
       ctx.shadowOffsetY = randomNum(-3, 3);
       ctx.shadowBlur = randomNum(-3, 3);
       ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-      var x = (this.width / 5) * i;
-      var y = this.height / 2;
-      var deg = randomNum(-30, 30);
-      /**设置旋转角度和坐标原点**/
+      const x = (this.width / 5) * i;
+      const y = this.height / 2;
+      const deg = randomNum(-30, 30);
+      /** 设置旋转角度和坐标原点* */
       ctx.translate(x, y);
       ctx.rotate((deg * Math.PI) / 180);
       ctx.fillText(text, 0, 0);
-      /**恢复旋转角度和坐标原点**/
+      /** 恢复旋转角度和坐标原点* */
       ctx.rotate((-deg * Math.PI) / 180);
       ctx.translate(-x, -y);
     }
@@ -115,13 +119,12 @@ class Gverify {
 
   validate(code: string) {
     var code = code.toLowerCase();
-    var originCode = this.code.toLowerCase();
+    const originCode = this.code.toLowerCase();
     if (code == originCode) {
       return true;
-    } else {
-      this.refresh();
-      return false;
     }
+    this.refresh();
+    return false;
   }
 }
 

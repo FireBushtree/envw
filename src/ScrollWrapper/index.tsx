@@ -5,7 +5,7 @@ export interface ScrollWrapperProps {
   height: string;
 }
 
-const ScrollWrapper: React.FC<ScrollWrapperProps> = props => {
+const ScrollWrapper: React.FC<ScrollWrapperProps> = (props) => {
   let timer: any = null;
   const clearTimer = () => {
     if (timer) {
@@ -43,7 +43,7 @@ const ScrollWrapper: React.FC<ScrollWrapperProps> = props => {
       if (wrapper.scrollTop >= content.scrollHeight) {
         wrapper.scrollTop = 0;
       } else {
-        wrapper.scrollTop++;
+        wrapper.scrollTop += 1;
       }
     }, 20);
 
