@@ -16,6 +16,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint'],
   rules: {
+    'object-curly-newline': [0],
     'import/no-extraneous-dependencies': [0],
     'jsx-a11y/no-static-element-interactions': [0],
     'jsx-a11y/click-events-have-key-events': [0],
