@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './index.less';
 import LoginForm from '@/src/Login/_utils/LoginForm';
+import textHeader from './images/text-header.png';
 
 export interface FuzzyProps {
   onFinish: (value: any) => any;
@@ -10,7 +11,7 @@ const Fuzzy: React.FC<FuzzyProps> = (props) =>
   (
     <div className="login">
       <div className="header">
-        <img src={require('./images/text-header.png')} alt="text" />
+        <img src={textHeader} alt="text" />
       </div>
       <div className="content">
         <LoginForm loginButton={{ type: 'img' }} />

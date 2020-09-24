@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Flip } from 'number-flip';
 
 const formatVal = (num: number) => {
-  const val = parseInt(`${num * 100}`);
+  const val = parseInt(`${num * 100}`, 10);
   return val;
 };
 
@@ -15,8 +15,7 @@ export interface NumberFlipProps {
 }
 
 const NumberFlip: React.FC<NumberFlipProps> = (props) => {
-  let { zero } = props;
-  (zero === undefined || zero === null) && (zero = true);
+  const { zero } = props;
 
   const ref = React.useRef<HTMLDivElement>(null);
   let timer: any = null;
@@ -57,12 +56,15 @@ const NumberFlip: React.FC<NumberFlipProps> = (props) => {
       option.seperateOnly = 2;
     }
 
+    // eslint-disable-next-line no-new
     new Flip(option);
 
     if (zero) {
       timer = setInterval(async () => {
         const container = ref.current;
-        container && (container.innerHTML = '');
+        container.innerHTML = '';
+
+        // eslint-disable-next-line no-new
         new Flip(option);
       }, 5000);
     }
@@ -71,11 +73,16 @@ const NumberFlip: React.FC<NumberFlipProps> = (props) => {
       clearTimer();
   }, [value]);
 
+  const { className, style } = props;
   return (
-    <div className={props.className} style={props.style}>
-      {typeof props.value === 'number' ? <div ref={ref} /> : 0}
+    <div className={className} style={style}>
+      {typeof value === 'number' ? <div ref={ref} /> : 0}
     </div>
   );
+};
+
+NumberFlip.defaultProps = {
+  zero: true,
 };
 
 export default NumberFlip;

@@ -9,6 +9,8 @@ import md5 from 'md5';
 import { login, LoginRes, syncToken } from '@/src/_utils/service/auth';
 import { LockOutlined, SafetyCertificateOutlined, UserOutlined } from '@ant-design/icons';
 import GVerify from '../Gverify';
+import btnEnter from './images/btn-enter.png';
+import iconUser from './images/icon-user.png';
 
 export type User = LoginRes & { accessToken: string };
 
@@ -40,10 +42,10 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
   const [loginning, setLoginning] = React.useState(false);
 
   useMount(() => {
-    const captcha = new GVerify({
+    const gverify = new GVerify({
       containerId: 'captcha',
     });
-    setCaptcha(captcha);
+    setCaptcha(gverify);
   });
 
   let { loginButton = {} } = props;
@@ -76,17 +78,27 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
     const userInfo = { ...res.data, accessToken: token.access_token };
 
     // 执行回调函数
-    const { onFinish } = props;
-    onFinish && onFinish(userInfo);
+    const { onFinish: propOnFinish } = props;
+    if (propOnFinish) {
+      propOnFinish(userInfo);
+    }
   };
+
+  const {
+    theme,
+    className,
+    title,
+    showFormLabel,
+    showFormIcon,
+  } = props;
 
   return (
     <Spin
-      wrapperClassName={`qw-login-form-wrap ${props.theme === 'line' ? 'is-theme-line' : ''}`}
+      wrapperClassName={`qw-login-form-wrap ${theme === 'line' ? 'is-theme-line' : ''}`}
       spinning={loginning}
     >
-      <div className={`${props.className || ''} qw-login-form`}>
-        <div className="qw-login-form-title">{props.title}</div>
+      <div className={`${className || ''} qw-login-form`}>
+        <div className="qw-login-form-title">{title}</div>
         <Form
           className="qw-form"
           layout="vertical"
@@ -95,31 +107,31 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
         >
           <Form.Item
             className="qw-form-item"
-            label={props.showFormLabel && '用户名:'}
+            label={showFormLabel && '用户名:'}
             name="username"
             rules={[{ required: true, message: '请输入用户名' }]}
           >
             <Input
-              prefix={props.showFormIcon && <UserOutlined className="qw-form-item-icon" />}
+              prefix={showFormIcon && <UserOutlined className="qw-form-item-icon" />}
               placeholder="请输入用户名"
             />
           </Form.Item>
 
           <Form.Item
             className="qw-form-item"
-            label={props.showFormLabel && '密码:'}
+            label={showFormLabel && '密码:'}
             name="password"
             rules={[{ required: true, message: '请输入密码' }]}
           >
             <Input.Password
-              prefix={props.showFormIcon && <LockOutlined className="qw-form-item-icon" />}
+              prefix={showFormIcon && <LockOutlined className="qw-form-item-icon" />}
               placeholder="请输入密码"
             />
           </Form.Item>
 
           <Form.Item
             className="qw-form-item"
-            label={props.showFormLabel && '验证码:'}
+            label={showFormLabel && '验证码:'}
             name="code"
             rules={[
               { required: true, message: '请输入验证码' },
@@ -128,7 +140,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
                   if (value && captcha.validate(value)) {
                     return Promise.resolve();
                   }
-                  return Promise.reject('验证码错误');
+                  return Promise.reject(new Error('验证码错误'));
                 },
                 validateTrigger: 'onSubmit',
               },
@@ -138,7 +150,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
               <Col span={12}>
                 <Input
                   prefix={
-                    props.showFormIcon && (
+                    showFormIcon && (
                       <SafetyCertificateOutlined className="qw-form-item-icon" />
                     )
                   }
@@ -158,7 +170,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
                 type="primary"
                 htmlType="submit"
               >
-                <img src={require('./images/btn-enter.png')} alt="login" />
+                <img src={btnEnter} alt="login" />
               </Button>
             )}
             {loginButton.type === 'button' && (
@@ -181,7 +193,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
 LoginForm.defaultProps = {
   showFormLabel: true,
   showFormIcon: false,
-  title: <img src={require('./images/icon-user.png')} alt="user" />,
+  title: <img src={iconUser} alt="user" />,
   loginButton: defaultLoginButtonProps,
   theme: 'base',
 };

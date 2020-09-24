@@ -3,13 +3,6 @@ import { Login } from 'wind';
 
 const { Supervise } = Login;
 
-const SuperviseDemo = () =>
-  (
-    <Supervise
-      onFinish={() => {
-        console.log(123);
-      }}
-    />
-  );
+const SuperviseDemo = () => <Supervise onFinish={() => {}} />;
 
 export default SuperviseDemo;

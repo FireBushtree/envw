@@ -6,8 +6,9 @@ export interface SuperviseProps {
   onFinish: (user: User) => any;
 }
 
-const Supervise: React.FC<SuperviseProps> = (props) =>
-  (
+const Supervise: React.FC<SuperviseProps> = (props) => {
+  const { onFinish } = props;
+  return (
     <div className="qw-login-supervise">
       <div className="qw-login-supervise-content">
         <div className="qw-login-supervise-form">
@@ -16,11 +17,12 @@ const Supervise: React.FC<SuperviseProps> = (props) =>
             theme="line"
             showFormIcon
             showFormLabel={false}
-            onFinish={props.onFinish}
+            onFinish={onFinish}
           />
         </div>
       </div>
     </div>
   );
+};
 
 export default Supervise;

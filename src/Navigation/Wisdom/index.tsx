@@ -11,15 +11,16 @@ export interface WisdomProps {
   navs: Array<NavBlock>;
 }
 
-const Wisdom: React.FC<WisdomProps> = (props) =>
-  (
+const Wisdom: React.FC<WisdomProps> = (props) => {
+  const { navs } = props;
+  return (
     <div className="qw-nav-widsom">
       <div className="qw-nav-widsom-header" />
       <div className="qw-nav-widsom-content">
-        {props.navs.map((item, index) =>
+        {navs.map((item, index) =>
           (
             <div
-              key={index}
+              key={item.name}
               style={{ background: item.color || '' }}
               className="qw-nav-widsom-nav-block"
             >
@@ -29,5 +30,6 @@ const Wisdom: React.FC<WisdomProps> = (props) =>
       </div>
     </div>
   );
+};
 
 export default Wisdom;

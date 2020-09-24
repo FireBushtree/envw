@@ -31,20 +31,23 @@ function request<T>(url: string, type: Method, data?: any, option?: Option) {
       },
     } as AxiosRequestConfig;
 
-    type.toUpperCase() === 'GET' && (requestOption.params = data);
+    if (type.toUpperCase() === 'GET') {
+      requestOption.params = data;
+    }
 
     axios
       .request<Response<T>>(requestOption)
       .then((res: AxiosResponse) => {
-        let { data, headers } = res;
+        let { data: resData } = res;
+        const { headers } = res;
 
-        data = typeof data === 'string' ? { data, result: 0 } : data;
+        resData = typeof resData === 'string' ? { resData, result: 0 } : resData;
 
         // 将响应头塞进返回结果
-        data.headers = headers;
+        resData.headers = headers;
 
         if (data.result === 0) {
-          resolve(data);
+          resolve(resData);
         } else {
           reject(res.data);
         }

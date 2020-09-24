@@ -55,13 +55,12 @@ const WindTable: React.FC<WindTableProps> = (props) => {
       if (wrapper.scrollTop >= tbody.scrollHeight) {
         wrapper.scrollTop = 0;
       } else {
-        wrapper.scrollTop++;
+        wrapper.scrollTop += 1;
       }
     }, 20);
 
-    return () => {
+    return () =>
       clearTimer();
-    };
   }, [dataSource]);
 
   React.useEffect(() => {
@@ -73,7 +72,7 @@ const WindTable: React.FC<WindTableProps> = (props) => {
       return;
     }
 
-    if (wrapper.hasOwnProperty('eventFlag')) {
+    if (Object.prototype.hasOwnProperty.call(wrapper, 'eventFlag')) {
       return;
     }
 
@@ -81,7 +80,9 @@ const WindTable: React.FC<WindTableProps> = (props) => {
     wrapper.addEventListener('scroll', (e) => {
       const { reachBottom } = props;
       if (wrapper.scrollTop + wrapper.clientHeight === tbody.scrollHeight) {
-        reachBottom && reachBottom(e);
+        if (reachBottom) {
+          reachBottom(e);
+        }
       }
     });
 

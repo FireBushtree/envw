@@ -6,12 +6,14 @@ export interface SimpleProps {
   onFinish: OnFinish;
 }
 
-const Simple: React.FC<SimpleProps> = (props) =>
-  (
+const Simple: React.FC<SimpleProps> = (props) => {
+  const { onFinish } = props;
+
+  return (
     <div className="qw-simple">
       <div className="qw-simple-form">
         <LoginForm
-          onFinish={props.onFinish}
+          onFinish={onFinish}
           loginButton={{
             align: 'right',
             className: 'qw-simple-form-login-button',
@@ -23,5 +25,6 @@ const Simple: React.FC<SimpleProps> = (props) =>
       </div>
     </div>
   );
+};
 
 export default Simple;

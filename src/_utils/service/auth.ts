@@ -45,8 +45,8 @@ export interface LoginRes {
 export const login = (data: LoginReq, params?: { tenantId: string }) =>
   post<LoginRes>('/cas/login', data, { params });
 
-export const syncToken = (access_token: string) =>
-  get('/cloud/zszy/prd/api/user/syncToken', { access_token });
+export const syncToken = (accessToken: string) =>
+  get('/cloud/zszy/prd/api/user/syncToken', { access_token: accessToken });
 
 export interface GetMenuReq {
   userId: string;

@@ -80,7 +80,7 @@ class Gverify {
 
     const textArray = numberArray;
 
-    for (var i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 4; i += 1) {
       const text = textArray[randomNum(0, textArray.length)];
       this.code += text;
       ctx.font = `${randomNum(this.height / 2, this.height)}px SimHei`; // 随机生成字体大小
@@ -101,7 +101,7 @@ class Gverify {
       ctx.translate(-x, -y);
     }
 
-    for (var i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i += 1) {
       ctx.strokeStyle = randomColor(40, 180);
       ctx.beginPath();
       ctx.moveTo(randomNum(0, this.width), randomNum(0, this.height));
@@ -109,7 +109,7 @@ class Gverify {
       ctx.stroke();
     }
 
-    for (var i = 0; i < this.width / 4; i++) {
+    for (let i = 0; i < this.width / 4; i += 1) {
       ctx.fillStyle = randomColor(0, 255);
       ctx.beginPath();
       ctx.arc(randomNum(0, this.width), randomNum(0, this.height), 1, 0, 2 * Math.PI);
@@ -118,9 +118,9 @@ class Gverify {
   }
 
   validate(code: string) {
-    var code = code.toLowerCase();
+    const currentCode = code.toLowerCase();
     const originCode = this.code.toLowerCase();
-    if (code == originCode) {
+    if (currentCode === originCode) {
       return true;
     }
     this.refresh();

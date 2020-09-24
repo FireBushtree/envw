@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "wind": ["src/index.tsx"],
+      "wind": ["src"],
       "@/src/*": ["src/*"]
     },
     "declaration": true,
