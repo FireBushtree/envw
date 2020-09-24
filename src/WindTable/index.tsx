@@ -59,8 +59,7 @@ const WindTable: React.FC<WindTableProps> = (props) => {
       }
     }, 20);
 
-    return () =>
-      clearTimer();
+    return () => clearTimer();
   }, [dataSource]);
 
   React.useEffect(() => {

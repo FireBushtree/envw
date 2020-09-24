@@ -69,8 +69,7 @@ const NumberFlip: React.FC<NumberFlipProps> = (props) => {
       }, 5000);
     }
 
-    return () =>
-      clearTimer();
+    return () => clearTimer();
   }, [value]);
 
   const { className, style } = props;

@@ -60,5 +60,4 @@ export const getMenu = (data: GetMenuReq) =>
 /**
  * 退出登录
  */
-export const logout = () =>
-  post('/cas/logout');
+export const logout = () => post('/cas/logout');

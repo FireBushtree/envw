@@ -52,8 +52,7 @@ function request<T>(url: string, type: Method, data?: any, option?: Option) {
           reject(res.data);
         }
       })
-      .catch((err) =>
-        reject(err));
+      .catch((err) => reject(err));
   });
 }
 
@@ -70,6 +69,4 @@ function put<T>(url: string, data?: any, option?: Option) {
   return request<T>(url, 'PUT', data, option);
 }
 
-export {
-  get, post, del, put,
-};
+export { get, post, del, put };

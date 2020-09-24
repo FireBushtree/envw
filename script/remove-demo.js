@@ -1,7 +1,7 @@
 const rimraf = require('rimraf');
 
 const remove = (filePath, name) => {
-  rimraf(filePath, {}, error => {
+  rimraf(filePath, {}, (error) => {
     if (error) {
       console.log(error);
     }

@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  message, Form, Input, Button, Col, Row, Spin,
-} from 'antd';
+import { message, Form, Input, Button, Col, Row, Spin } from 'antd';
 import './index.less';
 import { useMount } from 'ahooks';
 
@@ -84,13 +82,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
     }
   };
 
-  const {
-    theme,
-    className,
-    title,
-    showFormLabel,
-    showFormIcon,
-  } = props;
+  const { theme, className, title, showFormLabel, showFormIcon } = props;
 
   return (
     <Spin
@@ -150,9 +142,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
               <Col span={12}>
                 <Input
                   prefix={
-                    showFormIcon && (
-                      <SafetyCertificateOutlined className="qw-form-item-icon" />
-                    )
+                    showFormIcon && <SafetyCertificateOutlined className="qw-form-item-icon" />
                   }
                   placeholder="请输入验证码"
                 />
