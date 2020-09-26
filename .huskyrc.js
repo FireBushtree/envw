@@ -1,6 +1,6 @@
 module.exports = {
   hooks: {
-    'pre-commit': 'yarn prettier && yarn lint:fix',
+    'pre-commit': 'lint-staged',
     'commit-msg': 'commitlint -e $GIT_PARAMS',
   },
 };
