@@ -6,3 +6,5 @@ const { Supervise } = Login;
 const SuperviseDemo = () => <Supervise onFinish={() => {}} />;
 
 export default SuperviseDemo;
+
+
