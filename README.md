@@ -1,5 +1,12 @@
 # envw
 
+## How to contribute
+
+* clone this repo
+* modify code
+* `yarn commit` or `npm run commit`
+
 ## ToDoList
-[ ] 增加commit规范
-[ ] 增加commit hooks
+* [x] 增加commit规范
+* [x] 增加commit hooks
+* [] 增加测试
