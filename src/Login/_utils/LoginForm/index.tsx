@@ -25,6 +25,7 @@ export interface LoginFormProps {
   className?: string;
   showFormIcon?: boolean;
   showFormLabel?: boolean;
+  showCopyright?: boolean;
   title?: React.ReactElement | string;
   onFinish?: OnFinish;
   loginButton?: LoginButtonProps;
@@ -82,7 +83,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
     }
   };
 
-  const { theme, className, title, showFormLabel, showFormIcon } = props;
+  const { theme, className, title, showFormLabel, showFormIcon, showCopyright } = props;
 
   return (
     <Spin
@@ -174,7 +175,9 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
             )}
           </Form.Item>
         </Form>
-        <div className="qw-login-form-footer">Copyright © 2020 环境云版权所有保留一切权利</div>
+        {showCopyright && (
+          <div className="qw-login-form-footer">Copyright © 2020 环境云版权所有保留一切权利</div>
+        )}
       </div>
     </Spin>
   );
@@ -186,6 +189,7 @@ LoginForm.defaultProps = {
   title: <img src={iconUser} alt="user" />,
   loginButton: defaultLoginButtonProps,
   theme: 'base',
+  showCopyright: true,
 };
 
 export default LoginForm;
