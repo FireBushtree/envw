@@ -5,7 +5,7 @@ export const getUrlParam = (key: string) => {
     const r = matchList[i].match(/([^?&]+)=([^&]+)/);
 
     if (r) {
-      const [k, value] = r;
+      const [, k, value] = r;
       paramObj[k] = value;
     }
   }
