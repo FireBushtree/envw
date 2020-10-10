@@ -11,8 +11,11 @@ import btnEnter from './images/btn-enter.png';
 import iconUser from './images/icon-user.png';
 
 export type User = LoginRes & { accessToken: string };
-
 export type OnFinish = (value: User) => any;
+export type CommonLoginApi = {
+  syncToken?: boolean;
+  onFinish?: OnFinish;
+};
 
 interface LoginButtonProps {
   className?: string;
@@ -20,16 +23,15 @@ interface LoginButtonProps {
   align?: 'left' | 'right';
 }
 
-export interface LoginFormProps {
+export type LoginFormProps = {
   theme?: 'base' | 'line';
   className?: string;
   showFormIcon?: boolean;
   showFormLabel?: boolean;
   showCopyright?: boolean;
   title?: React.ReactElement | string;
-  onFinish?: OnFinish;
   loginButton?: LoginButtonProps;
-}
+} & CommonLoginApi;
 
 const defaultLoginButtonProps = {
   type: 'button',
@@ -73,7 +75,9 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
     const token = JSON.parse(tokenStr);
 
     // 同步token
-    syncToken(token.access_token);
+    if (props.syncToken) {
+      syncToken(token.access_token);
+    }
 
     const userInfo = { ...res.data, accessToken: token.access_token };
 
@@ -191,6 +195,7 @@ LoginForm.defaultProps = {
   loginButton: defaultLoginButtonProps,
   theme: 'base',
   showCopyright: true,
+  syncToken: false,
 };
 
 export default LoginForm;

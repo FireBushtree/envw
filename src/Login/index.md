@@ -6,5 +6,6 @@
 
 | 属性 | 说明 | 类型 | 必填 | 默认值 | 版本 |
 | :---- | :---- | :---- | :---- | :---- | :---- |
-| onFinish | 登录成功后的回调函数 | `function(user)` | `false` | - |
+| onFinish | 登录成功后的回调函数 | `function(user)` | 否 | - |  |
+| syncToken | 登录成功后是否需要同步token | `boolean` | 是 | `false` |  |
 

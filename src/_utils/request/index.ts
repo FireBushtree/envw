@@ -46,7 +46,7 @@ function request<T>(url: string, type: Method, data?: any, option?: Option) {
         // 将响应头塞进返回结果
         resData.headers = headers;
 
-        if (data.result === 0) {
+        if (resData.result === 0) {
           resolve(resData);
         } else {
           reject(res.data);

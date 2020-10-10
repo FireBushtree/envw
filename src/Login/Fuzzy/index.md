@@ -21,8 +21,8 @@ Fuzzy登录组件的属性说明如下：
 
 | 属性 | 说明 | 类型 | 必填 | 默认值 | 版本 |
 | :---- | :---- | :---- | :---- | :---- | :---- |
-| header | 登录页面顶部文字 | `string` &#124; `ReactNode` | `true` | - |
-| copyright | 页面底部**版权所有**方 | `string` &#124; `ReactNode` | `true` | - |
-| formBackgroundImage | 设置表单的背景图 | `string` | `false` | - |
-| backgroundImage | 设置页面的背景图 | `string` | `false` | - |
+| header | 登录页面顶部文字 | `string` &#124; `ReactNode` | 是 | - |
+| copyright | 页面底部**版权所有**方 | `string` &#124; `ReactNode` | 是 | - |
+| formBackgroundImage | 设置表单的背景图 | `string` | 否 | - |
+| backgroundImage | 设置页面的背景图 | `string` | 否 | - |
 
