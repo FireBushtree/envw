@@ -1,9 +1,9 @@
 import * as React from 'react';
-import LoginForm, { User } from '@/src/Login/_utils/LoginForm';
+import LoginForm, { OnFinish } from '@/src/Login/_utils/LoginForm';
 import './index.less';
 
 export interface SuperviseProps {
-  onFinish?: (user: User) => any;
+  onFinish?: OnFinish;
   header: React.ReactElement | string;
 }
 
