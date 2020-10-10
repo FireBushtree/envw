@@ -37,12 +37,13 @@ const defaultLoginButtonProps = {
 } as LoginButtonProps;
 
 const LoginForm: React.FC<LoginFormProps> = (props) => {
+  const generateGverifyId = `${Math.random()}${new Date().getTime()}`;
   const [captcha, setCaptcha] = React.useState({} as GVerify);
   const [loginning, setLoginning] = React.useState(false);
 
   useMount(() => {
     const gverify = new GVerify({
-      containerId: 'captcha',
+      containerId: generateGverifyId,
     });
     setCaptcha(gverify);
   });
@@ -149,7 +150,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
                 />
               </Col>
               <Col offset={4} span={8}>
-                <div style={{ width: '100%', height: '32px' }} id="captcha" />
+                <div style={{ width: '100%', height: '32px' }} id={generateGverifyId} />
               </Col>
             </Row>
           </Form.Item>

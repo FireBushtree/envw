@@ -3,7 +3,7 @@ import LoginForm, { OnFinish } from '@/src/Login/_utils/LoginForm';
 import './index.less';
 
 export interface SimpleProps {
-  onFinish: OnFinish;
+  onFinish?: OnFinish;
 }
 
 const Simple: React.FC<SimpleProps> = (props) => {
