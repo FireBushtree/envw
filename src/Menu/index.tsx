@@ -63,8 +63,7 @@ const Menu: React.FC<MenuProps> = (props) => {
       userId,
       tenantId,
       systemCode,
-    }),
-  );
+    }));
 
   const [collapsed, setCollapsed] = React.useState(false);
   const [iframeUrl, setIframeUrl] = React.useState('');
@@ -140,7 +139,7 @@ const Menu: React.FC<MenuProps> = (props) => {
               overlayClassName="qw-menu-popover"
               placement="bottom"
               trigger="click"
-              content={
+              content={(
                 <ul className="qw-menu-system-wrap">
                   <li className="qw-menu-system-user-item">
                     <SettingOutlined />
@@ -151,7 +150,7 @@ const Menu: React.FC<MenuProps> = (props) => {
                     <span>退出登录</span>
                   </li>
                 </ul>
-              }
+              )}
             >
               <span className="qw-menu-user">
                 <UserOutlined className="qw-menu-user-icon" />
@@ -163,7 +162,7 @@ const Menu: React.FC<MenuProps> = (props) => {
               overlayClassName="qw-menu-popover"
               trigger="click"
               placement="bottom"
-              content={
+              content={(
                 <ul className="qw-menu-system-wrap">
                   {formatSystemList(systemList).map((item) => (
                     <li key={item.code} className="qw-menu-system-item">
@@ -171,7 +170,7 @@ const Menu: React.FC<MenuProps> = (props) => {
                     </li>
                   ))}
                 </ul>
-              }
+              )}
             >
               <span className="qw-menu-top-hover">
                 <RetweetOutlined />
