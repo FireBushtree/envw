@@ -34,7 +34,7 @@ const Simple: React.FC<SimpleProps> = (props) => {
       imageTimer = setInterval(() => {
         nextIndex = nextIndex + 1 === maxIndex ? 0 : nextIndex + 1;
         setCurrentBgIndex(nextIndex);
-      }, 3000);
+      }, 6000);
     }
   }, [backgroundImages]);
 
