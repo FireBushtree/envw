@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './index.less';
-import { Layout, Menu as AntMenu, Popover } from 'antd';
+import { Breadcrumb, Layout, Menu as AntMenu, Popover, Modal } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -10,11 +10,13 @@ import {
   UserOutlined,
   SettingOutlined,
   LogoutOutlined,
+  CloseOutlined,
+  ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
 import Avatar from 'antd/lib/avatar/avatar';
 import { getUrlParam } from '../_utils/common';
-import { getMenu, getUser } from '../_utils/service/auth';
+import { getMenu, getUser, logout } from '../_utils/service/auth';
 import Iframe from './_utils/Iframe';
 import welcomeImg from './images/welcome.png';
 
@@ -24,6 +26,25 @@ const { SubMenu } = AntMenu;
 export interface MenuProps {
   systemName: string;
   logo: string;
+  logoutPage: string;
+}
+
+interface MenuNode {
+  children: null | MenuNode;
+  code: string;
+  description: string;
+  functionId: null;
+  iconFont: string;
+  id: string;
+  isControlled: number;
+  isLeaf: number;
+  isWelcomeMenu: number;
+  level: number;
+  name: string;
+  orderIndex: number;
+  parentId: string;
+  photoIds: string;
+  uri: string;
 }
 
 const formatSystemList = (systemStr: string) => {
@@ -65,19 +86,41 @@ const Menu: React.FC<MenuProps> = (props) => {
       systemCode,
     }));
 
-  const [collapsed, setCollapsed] = React.useState(false);
+  const [currentMenu, setCurrentMenu] = React.useState(null as MenuNode);
   const [iframeUrl, setIframeUrl] = React.useState('');
+  const [collapsed, setCollapsed] = React.useState(false);
 
-  const handleMenuChange = (url: string) => {
+  const handleMenuChange = (menu: MenuNode) => {
+    const { uri } = menu;
+
+    setCurrentMenu(menu);
     setIframeUrl(
-      `${url}?tenantId=${tenantId}&userId=${userId}&token=${token}&access_token=${token}`,
+      `${uri}?tenantId=${tenantId}&userId=${userId}&token=${token}&access_token=${token}`,
     );
   };
 
   const menuObj = JSON.parse(data?.data || '{}');
-  const handleLogout = () => {};
 
-  const generateMenu = (menus: Array<any>) => {
+  const handleLogout = async () => {
+    Modal.confirm({
+      title: '您确定退出登录吗？',
+      icon: <ExclamationCircleOutlined />,
+      cancelText: '取消',
+      okText: '确定',
+      onOk: async () => {
+        await logout();
+        window.location.href = props.logoutPage;
+      },
+      onCancel: () => {},
+    });
+  };
+
+  const handleCloseIframe = () => {
+    setCurrentMenu(null);
+    setIframeUrl('');
+  };
+
+  const generateMenu = (menus: Array<MenuNode>) => {
     if (menus.length === 0) {
       return;
     }
@@ -94,7 +137,7 @@ const Menu: React.FC<MenuProps> = (props) => {
         <AntMenu.Item
           icon={<FileTextOutlined />}
           key={item.id}
-          onClick={() => handleMenuChange(item.uri)}
+          onClick={() => handleMenuChange(item)}
         >
           {item.name}
         </AntMenu.Item>
@@ -104,7 +147,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 
   return (
     <Layout className="qw-menu" style={{ minHeight: '100vh' }}>
-      <Sider width={256} trigger={null} collapsible collapsed={collapsed}>
+      <Sider className="qw-menu-sider" width={256} trigger={null} collapsible collapsed={collapsed}>
         <div className="qw-menu-title">
           <Avatar src={logo} />
           {!collapsed && <span className="qw-menu-logo">{title || systemName}</span>}
@@ -123,29 +166,16 @@ const Menu: React.FC<MenuProps> = (props) => {
             )}
           </div>
           <div className="qw-menu-header-right">
-            <div className="qw-menu-logout">
-              {/* <Popconfirm
-                placement="bottomRight"
-                title="确认退出登录吗?"
-                onConfirm={handleLogout}
-                okText="确定"
-                cancelText="取消"
-              >
-                123
-              </Popconfirm> */}
-            </div>
-
             <Popover
               overlayClassName="qw-menu-popover"
               placement="bottom"
-              trigger="click"
               content={(
                 <ul className="qw-menu-system-wrap">
                   <li className="qw-menu-system-user-item">
                     <SettingOutlined />
                     <span>修改密码</span>
                   </li>
-                  <li className="qw-menu-system-user-item">
+                  <li onClick={() => handleLogout()} className="qw-menu-system-user-item">
                     <LogoutOutlined />
                     <span>退出登录</span>
                   </li>
@@ -160,7 +190,6 @@ const Menu: React.FC<MenuProps> = (props) => {
 
             <Popover
               overlayClassName="qw-menu-popover"
-              trigger="click"
               placement="bottom"
               content={(
                 <ul className="qw-menu-system-wrap">
@@ -179,6 +208,15 @@ const Menu: React.FC<MenuProps> = (props) => {
           </div>
         </Header>
         <Content>
+          <div className="qw-menu-crumbs">
+            <Breadcrumb>
+              <Breadcrumb.Item>{title}</Breadcrumb.Item>
+              <Breadcrumb.Item>{currentMenu ? currentMenu.name : '首页'}</Breadcrumb.Item>
+            </Breadcrumb>
+
+            <CloseOutlined onClick={() => handleCloseIframe()} />
+          </div>
+
           {iframeUrl ? (
             <Iframe url={iframeUrl} />
           ) : (

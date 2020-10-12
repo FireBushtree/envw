@@ -1,3 +1,6 @@
+@topHeight: 56px;
+@crumbsHeight: 48px;
+
 .qw-menu-popover {
   padding-top: 0;
 
@@ -75,17 +78,23 @@
   }
 
   .ant-menu-root {
-    height: calc(100% - 56px);
+    height: calc(100% - @topHeight);
     overflow: auto;
   }
 
+  &-sider {
+    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+  }
+
   &-header {
-    height: 56px;
+    height: @topHeight;
+    position: relative;
     background: #fff;
     color: #000;
     padding: 0;
     display: flex;
     justify-content: space-between;
+    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
     &-right {
       font-size: 18px;
@@ -97,7 +106,6 @@
 
   &-trigger {
     font-size: 18px;
-    line-height: 64px;
     padding: 0 24px;
     cursor: pointer;
     transition: color 0.3s;
@@ -140,7 +148,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 56px;
+    height: @topHeight;
   }
 
   &-logo {
@@ -152,12 +160,26 @@
     padding-left: 10px;
   }
 
+  &-crumbs {
+    padding: 0 24px;
+    height: @crumbsHeight;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+
+    .anticon-close {
+      cursor: pointer;
+    }
+  }
+
   &-empty-frame {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 98%;
+    height: calc(100% - @crumbsHeight);
+    overflow: hidden;
 
     &-title {
       padding-top: 60px;
