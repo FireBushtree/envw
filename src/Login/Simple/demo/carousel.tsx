@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { Login } from 'wind';
-import one from './images/1.jpg';
-import two from './images/3.jpg';
-import three from './images/4.jpg';
 
 const { Simple } = Login;
 
 const SimpleDemo = () => (
   <Simple
-    backgroundImages={[one, two, three]}
+    backgroundImages={[
+      require('./images/1.jpg'),
+      require('./images/3.jpg'),
+      require('./images/4.jpg'),
+    ]}
     onFinish={(user) => {
       console.log(user);
     }}

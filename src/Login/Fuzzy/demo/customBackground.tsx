@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { Login } from 'wind';
-import formBg from './images/bg-xwh-form.png';
-import wrapBg from './images/bg-xwh-login.jpg';
 
 const { Fuzzy } = Login;
 
@@ -12,8 +10,8 @@ const FuzzyDemo = () => (
     onFinish={(val) => {
       console.log(val);
     }}
-    backgroundImage={wrapBg}
-    formBackgroundImage={formBg}
+    backgroundImage={require('./images/bg-xwh-login.jpg')}
+    formBackgroundImage={require('./images/bg-xwh-form.png')}
   />
 );
 

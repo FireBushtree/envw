@@ -18,7 +18,6 @@ import Avatar from 'antd/lib/avatar/avatar';
 import { getUrlParam } from '../_utils/common';
 import { getMenu, getUser, logout } from '../_utils/service/auth';
 import Iframe from './_utils/Iframe';
-import welcomeImg from './images/welcome.png';
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = AntMenu;
@@ -221,7 +220,7 @@ const Menu: React.FC<MenuProps> = (props) => {
             <Iframe url={iframeUrl} />
           ) : (
             <div className="qw-menu-empty-frame">
-              <img src={welcomeImg} alt="welcome" />
+              <img src={require('./images/welcome.png')} alt="welcome" />
               <div className="qw-menu-empty-frame-title">
                 欢迎使用
                 {systemName}

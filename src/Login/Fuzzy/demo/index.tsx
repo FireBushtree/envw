@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Login } from 'wind';
-import textHeader from './images/text-header.png';
 
 const { Fuzzy } = Login;
 
 const FuzzyDemo = () => (
   <Fuzzy
     copyright="无锡汇泰"
-    header={<img src={textHeader} alt="text" />}
+    header={<img src={require('./images/text-header.png')} alt="text" />}
     onFinish={(val) => {
       console.log(val);
     }}

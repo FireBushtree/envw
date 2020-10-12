@@ -7,8 +7,6 @@ import md5 from 'md5';
 import { login, LoginRes, syncToken } from '@/src/_utils/service/auth';
 import { LockOutlined, SafetyCertificateOutlined, UserOutlined } from '@ant-design/icons';
 import GVerify from '../Gverify';
-import btnEnter from './images/btn-enter.png';
-import iconUser from './images/icon-user.png';
 
 export type User = LoginRes & { accessToken: string };
 export type OnFinish = (value: User) => any;
@@ -166,7 +164,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
                 type="primary"
                 htmlType="submit"
               >
-                <img src={btnEnter} alt="login" />
+                <img src={require('./images/btn-enter.png')} alt="login" />
               </Button>
             )}
             {loginButton.type === 'button' && (
@@ -191,7 +189,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
 LoginForm.defaultProps = {
   showFormLabel: true,
   showFormIcon: false,
-  title: <img src={iconUser} alt="user" />,
+  title: <img src={require('./images/icon-user.png')} alt="user" />,
   loginButton: defaultLoginButtonProps,
   theme: 'base',
   showCopyright: true,

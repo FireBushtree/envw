@@ -16,6 +16,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint'],
   rules: {
+    'global-require': [0],
     'object-curly-newline': [0],
     'import/no-extraneous-dependencies': [0],
     'jsx-a11y/no-static-element-interactions': [0],
