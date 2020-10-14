@@ -1,5 +1,5 @@
 import React from 'react';
-import { message, Form, Input, Button, Col, Row, Spin } from 'antd';
+import { message, Form, Input, Button, Col, Row, Spin, Checkbox } from 'antd';
 import './index.less';
 import { useMount } from 'ahooks';
 
@@ -29,6 +29,7 @@ export type LoginFormProps = {
   showCopyright?: boolean;
   title?: React.ReactElement | string;
   loginButton?: LoginButtonProps;
+  showRememberUsername?: boolean;
 } & CommonLoginApi;
 
 const defaultLoginButtonProps = {
@@ -86,7 +87,15 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
     }
   };
 
-  const { theme, className, title, showFormLabel, showFormIcon, showCopyright } = props;
+  const {
+    theme,
+    className,
+    title,
+    showFormLabel,
+    showFormIcon,
+    showCopyright,
+    showRememberUsername,
+  } = props;
 
   return (
     <Spin
@@ -158,6 +167,12 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
           </Form.Item>
 
           <Form.Item className={`${loginButton.align === 'right' ? 'is-right' : ''} qw-entry-wrap`}>
+            {showRememberUsername && (
+              <div>
+                <Checkbox>记住用户名</Checkbox>
+              </div>
+            )}
+
             {loginButton.type === 'img' && (
               <Button
                 className={`${loginButton.className} qw-login-button qw-img-entry`}
@@ -194,6 +209,7 @@ LoginForm.defaultProps = {
   theme: 'base',
   showCopyright: true,
   syncToken: false,
+  showRememberUsername: false,
 };
 
 export default LoginForm;

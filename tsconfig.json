@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "wind": ["src"],
+      "envw": ["src"],
       "@/src/*": ["src/*"]
     },
     "declaration": true,

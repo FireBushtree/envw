@@ -43,6 +43,7 @@ const Simple: React.FC<SimpleProps> = (props) => {
       <div className="qw-simple-form">
         <LoginForm
           showCopyright={false}
+          showRememberUsername
           syncToken={syncToken}
           onFinish={onFinish}
           loginButton={{

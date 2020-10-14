@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Login } from 'wind';
+import { Login } from 'envw';
 
 const { Supervise } = Login;
 

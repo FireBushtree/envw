@@ -13,7 +13,7 @@ import {
   CloseOutlined,
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
-import { useRequest } from 'ahooks';
+import { useMount, useRequest } from 'ahooks';
 import Avatar from 'antd/lib/avatar/avatar';
 import { getUrlParam } from '../_utils/common';
 import { getMenu, getUser, logout } from '../_utils/service/auth';
@@ -23,27 +23,36 @@ const { Header, Content, Sider } = Layout;
 const { SubMenu } = AntMenu;
 
 export interface MenuProps {
-  systemName: string;
-  logo: string;
+  showSystemList?: boolean;
+  staticMenu?: Array<MenuNode>;
+  systemName?: string;
+  logo?: React.ReactElement;
   logoutPage: string;
+  className?: string;
+  onSystemChange?: (system: System) => any;
 }
 
 interface MenuNode {
   children: null | MenuNode;
-  code: string;
-  description: string;
-  functionId: null;
-  iconFont: string;
-  id: string;
-  isControlled: number;
-  isLeaf: number;
-  isWelcomeMenu: number;
-  level: number;
+  code?: string;
+  description?: string;
+  functionId?: null;
+  iconFont?: string;
+  id?: string;
+  isControlled?: number;
+  isLeaf?: number;
+  isWelcomeMenu?: number;
+  level?: number;
   name: string;
-  orderIndex: number;
-  parentId: string;
-  photoIds: string;
+  orderIndex?: number;
+  parentId?: string;
+  photoIds?: string;
   uri: string;
+}
+
+interface System {
+  name: string;
+  code: string;
 }
 
 const formatSystemList = (systemStr: string) => {
@@ -52,7 +61,7 @@ const formatSystemList = (systemStr: string) => {
   }
 
   const system: Array<string> = JSON.parse(systemStr);
-  const systemList = [] as Array<{ name: string; code: string }>;
+  const systemList = [] as Array<System>;
 
   system.forEach((item) => {
     const [code, name] = item.split('||');
@@ -69,7 +78,7 @@ const Menu: React.FC<MenuProps> = (props) => {
   const userId = getUrlParam('userId');
   const tenantId = getUrlParam('tenantId');
   const systemCode = getUrlParam('systemCode');
-  const { systemName, logo } = props;
+  const { systemName, logo, className, showSystemList } = props;
 
   const { data: user } = useRequest(getUser);
   const { name: username = '', systemList = '' } = user?.data || {};
@@ -78,12 +87,25 @@ const Menu: React.FC<MenuProps> = (props) => {
     document.title = title || systemName;
   });
 
-  const { data } = useRequest(() =>
-    getMenu({
-      userId,
-      tenantId,
-      systemCode,
-    }));
+  const { data, run: runGetMenu } = useRequest(
+    () =>
+      getMenu({
+        userId,
+        tenantId,
+        systemCode,
+      }),
+    {
+      manual: true,
+    },
+  );
+
+  useMount(() => {
+    if (props.staticMenu && Array.isArray(props.staticMenu)) {
+      return;
+    }
+
+    runGetMenu();
+  });
 
   const [currentMenu, setCurrentMenu] = React.useState(null as MenuNode);
   const [iframeUrl, setIframeUrl] = React.useState('');
@@ -98,7 +120,18 @@ const Menu: React.FC<MenuProps> = (props) => {
     );
   };
 
-  const menuObj = JSON.parse(data?.data || '{}');
+  const handleSystemChange = (system: System) => {
+    const { onSystemChange } = props;
+
+    if (onSystemChange) {
+      onSystemChange(system);
+    }
+  };
+
+  const { staticMenu } = props;
+  const menuObj = Array.isArray(staticMenu)
+    ? { children: staticMenu }
+    : JSON.parse(data?.data || '{}');
 
   const handleLogout = async () => {
     Modal.confirm({
@@ -144,12 +177,26 @@ const Menu: React.FC<MenuProps> = (props) => {
     });
   };
 
+  const generateCollapsedTitle = () => {
+    if (logo && systemName) {
+      return <span className="qw-menu-logo">{title || systemName}</span>;
+    }
+
+    return null;
+  };
+
   return (
-    <Layout className="qw-menu" style={{ minHeight: '100vh' }}>
+    <Layout className={`qw-menu ${className}`} style={{ minHeight: '100vh' }}>
       <Sider className="qw-menu-sider" width={256} trigger={null} collapsible collapsed={collapsed}>
         <div className="qw-menu-title">
-          <Avatar src={logo} />
-          {!collapsed && <span className="qw-menu-logo">{title || systemName}</span>}
+          {collapsed ? (
+            generateCollapsedTitle()
+          ) : (
+            <>
+              {logo}
+              {!collapsed && <span className="qw-menu-logo">{title || systemName}</span>}
+            </>
+          )}
         </div>
         <AntMenu theme="dark" defaultSelectedKeys={['1']} mode="inline">
           {generateMenu(menuObj?.children || [])}
@@ -187,23 +234,29 @@ const Menu: React.FC<MenuProps> = (props) => {
               </span>
             </Popover>
 
-            <Popover
-              overlayClassName="qw-menu-popover"
-              placement="bottom"
-              content={(
-                <ul className="qw-menu-system-wrap">
-                  {formatSystemList(systemList).map((item) => (
-                    <li key={item.code} className="qw-menu-system-item">
-                      {item.name}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            >
-              <span className="qw-menu-top-hover">
-                <RetweetOutlined />
-              </span>
-            </Popover>
+            {showSystemList && (
+              <Popover
+                overlayClassName="qw-menu-popover"
+                placement="bottom"
+                content={(
+                  <ul className="qw-menu-system-wrap">
+                    {formatSystemList(systemList).map((item) => (
+                      <li
+                        onClick={() => handleSystemChange(item)}
+                        key={item.code}
+                        className="qw-menu-system-item"
+                      >
+                        {item.name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              >
+                <span className="qw-menu-top-hover">
+                  <RetweetOutlined />
+                </span>
+              </Popover>
+            )}
           </div>
         </Header>
         <Content>
@@ -231,6 +284,10 @@ const Menu: React.FC<MenuProps> = (props) => {
       </Layout>
     </Layout>
   );
+};
+
+Menu.defaultProps = {
+  showSystemList: true,
 };
 
 export default Menu;

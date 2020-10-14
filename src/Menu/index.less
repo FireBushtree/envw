@@ -80,6 +80,10 @@
   .ant-menu-root {
     height: calc(100% - @topHeight);
     overflow: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   &-sider {
@@ -149,6 +153,10 @@
     align-items: center;
     justify-content: center;
     height: @topHeight;
+
+    .ant-avatar > img {
+      width: 32px;
+    }
   }
 
   &-logo {
