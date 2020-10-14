@@ -14,7 +14,6 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import { useMount, useRequest } from 'ahooks';
-import Avatar from 'antd/lib/avatar/avatar';
 import { getUrlParam } from '../_utils/common';
 import { getMenu, getUser, logout } from '../_utils/service/auth';
 import Iframe from './_utils/Iframe';
@@ -23,17 +22,17 @@ const { Header, Content, Sider } = Layout;
 const { SubMenu } = AntMenu;
 
 export interface MenuProps {
+  logoutPage: string;
   showSystemList?: boolean;
   staticMenu?: Array<MenuNode>;
   systemName?: string;
   logo?: React.ReactElement;
-  logoutPage: string;
   className?: string;
   onSystemChange?: (system: System) => any;
 }
 
 interface MenuNode {
-  children: null | MenuNode;
+  children?: null | MenuNode;
   code?: string;
   description?: string;
   functionId?: null;
@@ -47,7 +46,7 @@ interface MenuNode {
   orderIndex?: number;
   parentId?: string;
   photoIds?: string;
-  uri: string;
+  uri?: string;
 }
 
 interface System {
