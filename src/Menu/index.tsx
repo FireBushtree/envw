@@ -29,6 +29,7 @@ export interface MenuProps {
   logo?: React.ReactElement;
   className?: string;
   onSystemChange?: (system: System) => any;
+  hasIframeToken?: boolean;
 }
 
 export interface MenuNode {
@@ -70,15 +71,32 @@ const formatSystemList = (systemStr: string) => {
   return systemList;
 };
 
+const getFirstLeaf = (menu: Array<MenuNode> | null, link = [] as Array<MenuNode>) => {
+  if (!menu) {
+    return link;
+  }
+
+  const target = menu.find((item) => !item.children);
+
+  if (target) {
+    link.push(target);
+    return;
+  }
+
+  const [firstNode] = menu;
+  link.push(firstNode);
+  return getFirstLeaf(firstNode.children, link);
+};
+
 const Menu: React.FC<MenuProps> = (props) => {
   // 防止title为`undefined`转义为字符， 所以做空字符串处理
+  const tab = getUrlParam('tab');
   const title = decodeURI(getUrlParam('title') || '');
   const token = getUrlParam('token');
   const userId = getUrlParam('userId');
   const tenantId = getUrlParam('tenantId');
   const systemCode = getUrlParam('systemCode');
   const { systemName, logo, className, showSystemList } = props;
-
   const { data: user } = useRequest(getUser);
   const { name: username = '', systemList = '' } = user?.data || {};
 
@@ -99,6 +117,7 @@ const Menu: React.FC<MenuProps> = (props) => {
   );
 
   useMount(() => {
+    // 设置静态菜单
     if (props.staticMenu && Array.isArray(props.staticMenu)) {
       return;
     }
@@ -113,10 +132,15 @@ const Menu: React.FC<MenuProps> = (props) => {
   const handleMenuChange = (menu: MenuNode) => {
     const { uri } = menu;
 
+    const { hasIframeToken } = props;
+    let redirectIframeUrl = `${uri}?tenantId=${tenantId}&userId=${userId}`;
+
+    if (hasIframeToken) {
+      redirectIframeUrl += `&token=${token}&access_token=${token}`;
+    }
+
     setCurrentMenu(menu);
-    setIframeUrl(
-      `${uri}?tenantId=${tenantId}&userId=${userId}&token=${token}&access_token=${token}`,
-    );
+    setIframeUrl(redirectIframeUrl);
   };
 
   const handleSystemChange = (system: System) => {
@@ -131,6 +155,29 @@ const Menu: React.FC<MenuProps> = (props) => {
   const menuObj = Array.isArray(staticMenu)
     ? { children: staticMenu }
     : JSON.parse(data?.data || '{}');
+
+  const [defaultSelectKeys, setDefaultSelectKeys] = React.useState([]);
+  const [defaultOpenKeys, setDefaultOpenKeys] = React.useState([]);
+
+  React.useEffect(() => {
+    if (menuObj.children && tab) {
+      const { children }: { children: Array<MenuNode> } = menuObj;
+      const target = children.find((item) => item.id === tab);
+
+      if (target) {
+        const link = [target];
+        getFirstLeaf(target.children, link);
+
+        const selected = link.pop();
+        setDefaultOpenKeys(link.map((item) => item.id));
+        setDefaultSelectKeys([selected.id]);
+        handleMenuChange(selected);
+      } else {
+        setDefaultOpenKeys([1]);
+        setDefaultSelectKeys([1]);
+      }
+    }
+  }, [data]);
 
   const handleLogout = async () => {
     Modal.confirm({
@@ -178,10 +225,33 @@ const Menu: React.FC<MenuProps> = (props) => {
 
   const generateCollapsedTitle = () => {
     if (logo && systemName) {
-      return <span className="qw-menu-logo">{title || systemName}</span>;
+      return logo;
     }
 
     return null;
+  };
+
+  const generateMenuRoot = () => {
+    // 当有tab时， 需要默认选中第一个叶子节点
+    // 但是数据从远程获取后， defaultOpenKeys失效
+    // 所以当有tab时等待 请求结果返回再渲染节点
+
+    const MenuEl = (
+      <AntMenu
+        theme="dark"
+        defaultOpenKeys={defaultOpenKeys}
+        defaultSelectedKeys={defaultSelectKeys}
+        mode="inline"
+      >
+        {generateMenu(menuObj?.children || [])}
+      </AntMenu>
+    );
+
+    if (tab && !staticMenu && defaultSelectKeys.length === 0) {
+      return null;
+    }
+
+    return MenuEl;
   };
 
   return (
@@ -193,13 +263,11 @@ const Menu: React.FC<MenuProps> = (props) => {
           ) : (
             <>
               {logo}
-              {!collapsed && <span className="qw-menu-logo">{title || systemName}</span>}
+              {systemName && <span className="qw-menu-logo">{title || systemName}</span>}
             </>
           )}
         </div>
-        <AntMenu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-          {generateMenu(menuObj?.children || [])}
-        </AntMenu>
+        {generateMenuRoot()}
       </Sider>
       <Layout>
         <Header className="qw-menu-header">
@@ -287,6 +355,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 
 Menu.defaultProps = {
   showSystemList: true,
+  hasIframeToken: true,
 };
 
 export default Menu;

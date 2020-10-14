@@ -5,6 +5,7 @@ const { Simple } = Login;
 
 const SimpleDemo = () => (
   <Simple
+    errorTime={3}
     onFinish={(user) => {
       console.log(user);
     }}

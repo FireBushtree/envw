@@ -7,6 +7,31 @@
   align-items: center;
   justify-content: center;
   transition: all 1s;
+
+  .qw-entry-wrap {
+    .ant-form-item-control-input-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .ant-checkbox-wrapper {
+        color: #71b63b;
+      }
+
+      .ant-checkbox-checked .ant-checkbox-inner {
+        background-color: #71b63b;
+        border-color: #71b63b;
+      }
+
+      .ant-checkbox-checked::after {
+        border-color: #71b63b;
+      }
+    }
+  }
+
+  .qw-form-item-remember {
+    float: left;
+  }
 }
 
 .qw-simple-form-content {
