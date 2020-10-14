@@ -31,8 +31,8 @@ export interface MenuProps {
   onSystemChange?: (system: System) => any;
 }
 
-interface MenuNode {
-  children?: null | MenuNode;
+export interface MenuNode {
+  children?: null | Array<MenuNode>;
   code?: string;
   description?: string;
   functionId?: null;
