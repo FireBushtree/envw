@@ -41,8 +41,11 @@ const defaultLoginButtonProps = {
   align: 'left',
 } as LoginButtonProps;
 
+const USERNAME_KEY = 'envw_username';
+
 const LoginForm: React.FC<LoginFormProps> = (props) => {
   // const generateGverifyId = `${Math.random()}${new Date().getTime()}`;
+  const formRef = React.useRef(null);
   const [captcha, setCaptcha] = React.useState({} as GVerify);
   const [loginning, setLoginning] = React.useState(false);
   const [rememberUsername, setRememberUsername] = React.useState(false);
@@ -58,6 +61,14 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
     const isRememberStr = localStorage.getItem(REMEMBER_USER_KEY);
     const isRemember = JSON.parse(isRememberStr || 'false');
     setRememberUsername(isRemember);
+
+    // 3. 设置用户名
+    const { setFieldsValue } = formRef.current;
+    const username = localStorage.getItem(USERNAME_KEY);
+
+    if (username) {
+      setFieldsValue({ username });
+    }
   });
 
   const getErrorCount = () => {
@@ -111,6 +122,12 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
       return;
     } finally {
       setLoginning(false);
+
+      if (rememberUsername) {
+        localStorage.setItem(USERNAME_KEY, values.username);
+      } else {
+        localStorage.removeItem(USERNAME_KEY);
+      }
     }
 
     const tokenStr = res.headers['access-token'];
@@ -148,6 +165,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
       <div className={`${className || ''} qw-login-form`}>
         <div className="qw-login-form-title">{title}</div>
         <Form
+          ref={formRef}
           className="qw-form"
           layout="vertical"
           initialValues={{ remember: true }}
