@@ -30,6 +30,10 @@ export interface MenuProps {
   className?: string;
   onSystemChange?: (system: System) => any;
   hasIframeToken?: boolean;
+  onMenuChange?: (menu: MenuNode, setIframeUrl: Function) => any;
+  clickChangePassword?: (setIframeUrl: Function) => any;
+  formatMenu?: (menu: Array<MenuNode>) => Array<MenuNode>;
+  useDefaultIcon?: boolean;
 }
 
 export interface MenuNode {
@@ -48,6 +52,7 @@ export interface MenuNode {
   parentId?: string;
   photoIds?: string;
   uri?: string;
+  icon?: React.ReactElement | string;
 }
 
 interface System {
@@ -96,7 +101,15 @@ const Menu: React.FC<MenuProps> = (props) => {
   const userId = getUrlParam('userId');
   const tenantId = getUrlParam('tenantId');
   const systemCode = getUrlParam('systemCode');
-  const { systemName, logo, className, showSystemList } = props;
+  const {
+    systemName,
+    logo,
+    className,
+    showSystemList,
+    clickChangePassword,
+    formatMenu,
+    useDefaultIcon,
+  } = props;
   const { data: user } = useRequest(getUser);
   const { name: username = '', systemList = '' } = user?.data || {};
 
@@ -130,16 +143,22 @@ const Menu: React.FC<MenuProps> = (props) => {
   const [collapsed, setCollapsed] = React.useState(false);
 
   const handleMenuChange = (menu: MenuNode) => {
-    const { uri } = menu;
+    setCurrentMenu(menu);
 
-    const { hasIframeToken } = props;
+    const { uri } = menu;
+    const { hasIframeToken, onMenuChange } = props;
+
+    if (onMenuChange) {
+      onMenuChange(menu, setIframeUrl);
+      return;
+    }
+
     let redirectIframeUrl = `${uri}?tenantId=${tenantId}&userId=${userId}`;
 
     if (hasIframeToken) {
       redirectIframeUrl += `&token=${token}&access_token=${token}`;
     }
 
-    setCurrentMenu(menu);
     setIframeUrl(redirectIframeUrl);
   };
 
@@ -152,9 +171,14 @@ const Menu: React.FC<MenuProps> = (props) => {
   };
 
   const { staticMenu } = props;
-  const menuObj = Array.isArray(staticMenu)
+
+  let menuObj = Array.isArray(staticMenu)
     ? { children: staticMenu }
     : JSON.parse(data?.data || '{}');
+
+  if (formatMenu) {
+    menuObj = formatMenu(menuObj);
+  }
 
   const [defaultSelectKeys, setDefaultSelectKeys] = React.useState([]);
   const [defaultOpenKeys, setDefaultOpenKeys] = React.useState([]);
@@ -206,14 +230,18 @@ const Menu: React.FC<MenuProps> = (props) => {
     return menus.map((item) => {
       if (Array.isArray(item.children) && item.children.length > 0) {
         return (
-          <SubMenu icon={<FolderOutlined />} key={item.id} title={item.name}>
+          <SubMenu
+            icon={item.icon || (useDefaultIcon ? <FolderOutlined /> : null)}
+            key={item.id}
+            title={item.name}
+          >
             {generateMenu(item.children)}
           </SubMenu>
         );
       }
       return (
         <AntMenu.Item
-          icon={<FileTextOutlined />}
+          icon={item.icon || (useDefaultIcon ? <FileTextOutlined /> : null)}
           key={item.id}
           onClick={() => handleMenuChange(item)}
         >
@@ -284,7 +312,14 @@ const Menu: React.FC<MenuProps> = (props) => {
               placement="bottom"
               content={(
                 <ul className="qw-menu-system-wrap">
-                  <li className="qw-menu-system-user-item">
+                  <li
+                    onClick={() => {
+                      if (clickChangePassword) {
+                        clickChangePassword(setIframeUrl);
+                      }
+                    }}
+                    className="qw-menu-system-user-item"
+                  >
                     <SettingOutlined />
                     <span>修改密码</span>
                   </li>
@@ -356,6 +391,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 Menu.defaultProps = {
   showSystemList: true,
   hasIframeToken: true,
+  useDefaultIcon: true,
 };
 
 export default Menu;

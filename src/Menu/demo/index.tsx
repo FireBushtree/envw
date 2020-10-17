@@ -7,6 +7,7 @@ const MenuDemo = () => (
     logo={<img src={require('./images/logo.png')} alt="logo" />}
     systemName="江北新区智慧环卫一体化平台"
     hasIframeToken={false}
+    useDefaultIcon={false}
   />
 );
 
