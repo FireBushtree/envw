@@ -29,10 +29,9 @@ export interface MenuProps {
   logo?: React.ReactElement;
   className?: string;
   onSystemChange?: (system: System) => any;
-  hasIframeToken?: boolean;
   onMenuChange?: (menu: MenuNode, setIframeUrl: Function) => any;
   clickChangePassword?: (setIframeUrl: Function) => any;
-  formatMenu?: (menu: Array<MenuNode>) => Array<MenuNode>;
+  formatMenu?: (menu: MenuNode) => Array<MenuNode>;
   useDefaultIcon?: boolean;
 }
 
@@ -109,6 +108,7 @@ const Menu: React.FC<MenuProps> = (props) => {
     clickChangePassword,
     formatMenu,
     useDefaultIcon,
+    staticMenu,
   } = props;
   const { data: user } = useRequest(getUser);
   const { name: username = '', systemList = '' } = user?.data || {};
@@ -146,19 +146,14 @@ const Menu: React.FC<MenuProps> = (props) => {
     setCurrentMenu(menu);
 
     const { uri } = menu;
-    const { hasIframeToken, onMenuChange } = props;
+    const { onMenuChange } = props;
 
     if (onMenuChange) {
       onMenuChange(menu, setIframeUrl);
       return;
     }
 
-    let redirectIframeUrl = `${uri}?tenantId=${tenantId}&userId=${userId}`;
-
-    if (hasIframeToken) {
-      redirectIframeUrl += `&token=${token}&access_token=${token}`;
-    }
-
+    const redirectIframeUrl = `${uri}?tenantId=${tenantId}&userId=${userId}&token=${token}&access_token=${token}`;
     setIframeUrl(redirectIframeUrl);
   };
 
@@ -169,8 +164,6 @@ const Menu: React.FC<MenuProps> = (props) => {
       onSystemChange(system);
     }
   };
-
-  const { staticMenu } = props;
 
   let menuObj = Array.isArray(staticMenu)
     ? { children: staticMenu }
@@ -390,7 +383,6 @@ const Menu: React.FC<MenuProps> = (props) => {
 
 Menu.defaultProps = {
   showSystemList: true,
-  hasIframeToken: true,
   useDefaultIcon: true,
 };
 
