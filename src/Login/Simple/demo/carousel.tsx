@@ -10,9 +10,7 @@ const SimpleDemo = () => (
       require('./images/3.jpg'),
       require('./images/4.jpg'),
     ]}
-    onFinish={(user) => {
-      console.log(user);
-    }}
+    onFinish={(user) => {}}
   />
 );
 

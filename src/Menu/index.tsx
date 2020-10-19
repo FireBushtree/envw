@@ -14,7 +14,7 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import { useMount, useRequest } from 'ahooks';
-import { getUrlParam } from '../_utils/common';
+import { getUrlParam, jointQueryObject } from '../_utils/common';
 import { getMenu, getUser, logout } from '../_utils/service/auth';
 import Iframe from './_utils/Iframe';
 
@@ -31,8 +31,9 @@ export interface MenuProps {
   onSystemChange?: (system: System) => any;
   onMenuChange?: (menu: MenuNode, setIframeUrl: Function) => any;
   clickChangePassword?: (setIframeUrl: Function) => any;
-  formatMenu?: (menu: MenuNode) => Array<MenuNode>;
+  formatMenu?: (menu: MenuNode) => MenuNode;
   useDefaultIcon?: boolean;
+  showBreadcrumb?: boolean;
 }
 
 export interface MenuNode {
@@ -109,8 +110,13 @@ const Menu: React.FC<MenuProps> = (props) => {
     formatMenu,
     useDefaultIcon,
     staticMenu,
+    showBreadcrumb,
   } = props;
-  const { data: user } = useRequest(getUser);
+  const { data: user } = useRequest(getUser, {
+    onError: (error) => {
+      window.location.href = props.logoutPage;
+    },
+  });
   const { name: username = '', systemList = '' } = user?.data || {};
 
   React.useEffect(() => {
@@ -153,7 +159,15 @@ const Menu: React.FC<MenuProps> = (props) => {
       return;
     }
 
-    const redirectIframeUrl = `${uri}?tenantId=${tenantId}&userId=${userId}&token=${token}&access_token=${token}`;
+    const query = {
+      tenantId,
+      userId,
+      token,
+      access_token: token,
+    };
+
+    const redirectIframeUrl = `${uri}?${jointQueryObject(query)}`;
+
     setIframeUrl(redirectIframeUrl);
   };
 
@@ -354,15 +368,17 @@ const Menu: React.FC<MenuProps> = (props) => {
             )}
           </div>
         </Header>
-        <Content>
-          <div className="qw-menu-crumbs">
-            <Breadcrumb>
-              <Breadcrumb.Item>{title}</Breadcrumb.Item>
-              <Breadcrumb.Item>{currentMenu ? currentMenu.name : '首页'}</Breadcrumb.Item>
-            </Breadcrumb>
+        <Content className="qw-menu-content">
+          {showBreadcrumb && (
+            <div className="qw-menu-crumbs">
+              <Breadcrumb>
+                <Breadcrumb.Item>{title}</Breadcrumb.Item>
+                <Breadcrumb.Item>{currentMenu ? currentMenu.name : '首页'}</Breadcrumb.Item>
+              </Breadcrumb>
 
-            <CloseOutlined onClick={() => handleCloseIframe()} />
-          </div>
+              <CloseOutlined onClick={() => handleCloseIframe()} />
+            </div>
+          )}
 
           {iframeUrl ? (
             <Iframe url={iframeUrl} />
@@ -384,6 +400,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 Menu.defaultProps = {
   showSystemList: true,
   useDefaultIcon: true,
+  showBreadcrumb: true,
 };
 
 export default Menu;

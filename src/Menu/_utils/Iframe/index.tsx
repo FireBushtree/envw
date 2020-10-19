@@ -17,7 +17,11 @@ const Iframe: React.FC<IframeProps> = (props) => {
   return showIframe ? (
     <iframe
       title="content"
-      style={{ width: '100%', height: 'calc(100% - 48px)', border: 'none' }}
+      width="100%"
+      height="100%"
+      frameBorder="no"
+      scrolling="no"
+      allowFullScreen
       src={url}
     />
   ) : null;

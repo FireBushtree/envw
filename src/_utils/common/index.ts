@@ -14,3 +14,14 @@ export const getUrlParam = (key: string) => {
   }
   return paramObj;
 };
+
+export const jointQueryObject = (obj: { [propName: string]: any }) => {
+  let result = '';
+
+  Object.keys(obj).forEach((key) => {
+    const val = obj[key];
+    result += `${key}=${val}`;
+  });
+
+  return result;
+};
