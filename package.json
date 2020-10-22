@@ -1,6 +1,6 @@
 {
   "name": "envw",
-  "version": "1.0.22-snapshot",
+  "version": "1.1.0-release",
   "main": "lib/index.js",
   "module": "es/index.js",
   "description": "Envcloud frontend accumulation",
