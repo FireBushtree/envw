@@ -9,11 +9,11 @@ export default defineConfig({
   extraBabelPlugins: [['import', { libraryName: 'antd', style: 'css' }]],
   proxy: {
     '/cas': {
-      target: 'http://jbxq.ljfl.envcloud.com.cn:9391',
+      target: 'http://localhost:7001',
       changeOrigin: true,
     },
     '/cloud': {
-      target: 'http://jbxq.ljfl.envcloud.com.cn:9391',
+      target: 'http://localhost:7001',
       changeOrigin: true,
     },
   },

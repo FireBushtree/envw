@@ -2,15 +2,49 @@ import React from 'react';
 import LoginForm, { CommonLoginApi } from '@/src/Login/_utils/LoginForm';
 import './index.less';
 
-export type SimpleProps = CommonLoginApi & {};
+export type SimpleProps = CommonLoginApi & {
+  backgroundImages?: Array<string> | string;
+};
 
 const Simple: React.FC<SimpleProps> = (props) => {
-  const { onFinish, syncToken } = props;
+  const { onFinish, syncToken, errorTime } = props;
+  let imageTimer = null;
+
+  const [currentBgIndex, setCurrentBgIndex] = React.useState(0);
+  const wrapStyles = {} as React.CSSProperties;
+
+  let { backgroundImages } = props;
+
+  if (backgroundImages) {
+    if (typeof backgroundImages === 'string') {
+      backgroundImages = [backgroundImages];
+    }
+
+    wrapStyles.backgroundImage = `url(${backgroundImages[currentBgIndex]})`;
+  }
+
+  React.useEffect(() => {
+    if (backgroundImages && backgroundImages.length > 0) {
+      clearInterval(imageTimer);
+      imageTimer = null;
+
+      const maxIndex = backgroundImages.length;
+      let nextIndex = currentBgIndex;
+
+      imageTimer = setInterval(() => {
+        nextIndex = nextIndex + 1 === maxIndex ? 0 : nextIndex + 1;
+        setCurrentBgIndex(nextIndex);
+      }, 6000);
+    }
+  }, [backgroundImages]);
 
   return (
-    <div className="qw-simple">
+    <div style={wrapStyles} className="qw-simple">
       <div className="qw-simple-form">
         <LoginForm
+          errorTime={errorTime}
+          showCopyright={false}
+          showRememberUsername
           syncToken={syncToken}
           onFinish={onFinish}
           loginButton={{
@@ -28,6 +62,7 @@ const Simple: React.FC<SimpleProps> = (props) => {
 
 Simple.defaultProps = {
   syncToken: false,
+  errorTime: 0,
 };
 
 export default Simple;
