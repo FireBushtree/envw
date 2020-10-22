@@ -13,11 +13,26 @@ export interface Response<T> {
 
 interface Option {
   params?: any;
+  bearerAuth?: boolean;
 }
+
+const defaultOption = {
+  params: null,
+  bearerAuth: false,
+} as Option;
 
 function request<T>(url: string, type: Method, data?: any, option?: Option) {
   return new Promise<Response<T>>((resolve, reject) => {
-    const token = getUrlParam('token') || getAccessTokenFromStorage();
+    const mergedOption = {
+      ...defaultOption,
+      ...option,
+    };
+
+    let token = getUrlParam('token') || getAccessTokenFromStorage();
+
+    if (mergedOption.bearerAuth) {
+      token = `bearer ${token}`;
+    }
 
     const requestOption = {
       url,
@@ -46,7 +61,7 @@ function request<T>(url: string, type: Method, data?: any, option?: Option) {
         // 将响应头塞进返回结果
         resData.headers = headers;
 
-        if (data.result === 0) {
+        if (resData.result === 0) {
           resolve(resData);
         } else {
           reject(res.data);

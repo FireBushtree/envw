@@ -5,7 +5,7 @@ export const getUrlParam = (key: string) => {
     const r = matchList[i].match(/([^?&]+)=([^&]+)/);
 
     if (r) {
-      const [k, value] = r;
+      const [, k, value] = r;
       paramObj[k] = value;
     }
   }
@@ -13,4 +13,15 @@ export const getUrlParam = (key: string) => {
     return paramObj[key];
   }
   return paramObj;
+};
+
+export const jointQueryObject = (obj: { [propName: string]: any }) => {
+  let result = '';
+
+  Object.keys(obj).forEach((key) => {
+    const val = obj[key];
+    result += `${key}=${val}`;
+  });
+
+  return result;
 };
