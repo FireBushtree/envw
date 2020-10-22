@@ -1,5 +1,5 @@
 interface GverifyOptions {
-  containerId: string;
+  container: HTMLElement;
 }
 
 function randomNum(min: number, max: number) {
@@ -24,7 +24,7 @@ class Gverify {
 
   height: number;
 
-  containerId: string;
+  container: HTMLElement;
 
   canvas: HTMLCanvasElement | null;
 
@@ -33,14 +33,14 @@ class Gverify {
     this.height = INIT_HEIGHT;
     this.canvas = null;
     this.code = '';
-    this.containerId = option.containerId;
+    this.container = option.container;
 
     this.init();
     this.refresh();
   }
 
   init() {
-    const container = document.getElementById(this.containerId);
+    const { container } = this;
 
     if (!container) {
       return;
@@ -52,7 +52,7 @@ class Gverify {
     this.height = offsetHeight || INIT_HEIGHT;
 
     const canvas = document.createElement('canvas');
-    canvas.id = this.containerId;
+    canvas.id = `${Math.random()}${new Date().getTime()}`;
     canvas.width = this.width;
     canvas.height = this.height;
     canvas.style.cursor = 'pointer';

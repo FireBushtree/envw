@@ -8,11 +8,24 @@ const MenuDemo = () => (
         name: '菜单1',
         children: [
           {
-            name: '子菜单1',
+            name: '子菜单1-1',
             uri: 'http://jbxq.ljfl.envcloud.com.cn:9391/static/bg-supervise.4cf4a975.png',
           },
           {
-            name: '子菜单2',
+            name: '子菜单1-2',
+            uri: 'http://jbxq.ljfl.envcloud.com.cn:9391/static/welcome.1677c493.png',
+          },
+        ],
+      },
+      {
+        name: '菜单2',
+        children: [
+          {
+            name: '子菜单2-1',
+            uri: 'http://jbxq.ljfl.envcloud.com.cn:9391/static/bg-supervise.4cf4a975.png',
+          },
+          {
+            name: '子菜单2-2',
             uri: 'http://jbxq.ljfl.envcloud.com.cn:9391/static/welcome.1677c493.png',
           },
         ],

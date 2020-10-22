@@ -44,8 +44,8 @@ const defaultLoginButtonProps = {
 const USERNAME_KEY = 'envw_username';
 
 const LoginForm: React.FC<LoginFormProps> = (props) => {
-  // const generateGverifyId = `${Math.random()}${new Date().getTime()}`;
   const formRef = React.useRef(null);
+  const gverifyRef = React.useRef<HTMLDivElement>(null);
   const [captcha, setCaptcha] = React.useState({} as GVerify);
   const [loginning, setLoginning] = React.useState(false);
   const [rememberUsername, setRememberUsername] = React.useState(false);
@@ -53,7 +53,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
   useMount(() => {
     // 1. 生成验证码
     const gverify = new GVerify({
-      containerId: 'gverify',
+      container: gverifyRef.current,
     });
     setCaptcha(gverify);
 
@@ -111,7 +111,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
         if (errorCount + 1 === props.errorTime) {
           setTimeout(() => {
             const gverify = new GVerify({
-              containerId: 'gverify',
+              container: gverifyRef.current,
             });
             setCaptcha(gverify);
           });
@@ -223,7 +223,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
                   />
                 </Col>
                 <Col offset={4} span={8}>
-                  <div style={{ width: '100%', height: '32px' }} id="gverify" />
+                  <div style={{ width: '100%', height: '32px' }} ref={gverifyRef} />
                 </Col>
               </Row>
             </Form.Item>
