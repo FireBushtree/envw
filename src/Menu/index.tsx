@@ -114,7 +114,7 @@ const Menu: React.FC<MenuProps> = (props) => {
   } = props;
   const { data: user } = useRequest(getUser, {
     onError: (error) => {
-      // window.location.href = props.logoutPage;
+      window.location.href = props.logoutPage;
     },
   });
   const { name: username = '', systemList = '' } = user?.data || {};

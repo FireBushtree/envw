@@ -6,6 +6,9 @@
       "@/src/*": ["src/*"]
     },
     "declaration": true,
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+    ],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "experimentalDecorators": true,
