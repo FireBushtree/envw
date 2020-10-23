@@ -1,6 +1,7 @@
 es
 lib
 node_modules
+envw-typings
 
 yarn.lock
 yarn-error.log
