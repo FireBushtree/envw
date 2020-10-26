@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { getUrlParam } from '../common';
 import { post, get } from '../request';
 
@@ -40,6 +41,13 @@ export interface LoginRes {
   whiteList: null;
 }
 
+export interface LoginWithVcodeReq {
+  username: string;
+  password: string;
+  vid: string;
+  vcode: string;
+}
+
 export interface User {
   departmentId: string;
   departmentName: string;
@@ -77,6 +85,9 @@ export interface User {
 export const login = (data: LoginReq, params?: { tenantId: string }) =>
   post<LoginRes>('/cas/login', data, { params });
 
+export const loginWithVcode = (data: LoginWithVcodeReq) =>
+  post<LoginRes>('/cas/loginWithVcode', data);
+
 export const syncToken = (accessToken: string) =>
   get('/cloud/zszy/prd/api/user/syncToken', { access_token: accessToken });
 
@@ -105,3 +116,10 @@ export const getMenu = (data: GetMenuReq) =>
  * 退出登录
  */
 export const logout = () => post('/cas/logout');
+
+export const getRemoteCode = (oldId: string) =>
+  axios.request<{ vid: string; img: string }>({
+    url: '/cloud/management/rest/np/login/captcha',
+    params: { oldId },
+    method: 'POST',
+  });

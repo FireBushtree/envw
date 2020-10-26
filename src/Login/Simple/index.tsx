@@ -7,7 +7,7 @@ export type SimpleProps = CommonLoginApi & {
 };
 
 const Simple: React.FC<SimpleProps> = (props) => {
-  const { onFinish, syncToken, errorTime } = props;
+  const { onFinish, syncToken, errorTime, remoteCode } = props;
   let imageTimer = null;
 
   const [currentBgIndex, setCurrentBgIndex] = React.useState(0);
@@ -42,6 +42,7 @@ const Simple: React.FC<SimpleProps> = (props) => {
     <div style={wrapStyles} className="qw-simple">
       <div className="qw-simple-form">
         <LoginForm
+          remoteCode={remoteCode}
           errorTime={errorTime}
           showCopyright={false}
           showRememberUsername
@@ -63,6 +64,7 @@ const Simple: React.FC<SimpleProps> = (props) => {
 Simple.defaultProps = {
   syncToken: false,
   errorTime: 0,
+  remoteCode: false,
 };
 
 export default Simple;

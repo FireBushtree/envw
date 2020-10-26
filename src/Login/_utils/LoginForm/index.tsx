@@ -1,10 +1,16 @@
 import React from 'react';
 import { message, Form, Input, Button, Col, Row, Spin, Checkbox } from 'antd';
 import './index.less';
-import { useMount } from 'ahooks';
+import { useMount, useRequest } from 'ahooks';
 
 import md5 from 'md5';
-import { login, LoginRes, syncToken } from '@/src/_utils/service/auth';
+import {
+  getRemoteCode,
+  login,
+  LoginRes,
+  loginWithVcode,
+  syncToken,
+} from '@/src/_utils/service/auth';
 import { LockOutlined, SafetyCertificateOutlined, UserOutlined } from '@ant-design/icons';
 import GVerify from '../Gverify';
 
@@ -17,6 +23,7 @@ export type CommonLoginApi = {
   syncToken?: boolean;
   onFinish?: OnFinish;
   errorTime?: number;
+  remoteCode?: boolean;
 };
 
 interface LoginButtonProps {
@@ -42,6 +49,7 @@ const defaultLoginButtonProps = {
 } as LoginButtonProps;
 
 const USERNAME_KEY = 'envw_username';
+let code = '';
 
 const LoginForm: React.FC<LoginFormProps> = (props) => {
   const formRef = React.useRef(null);
@@ -50,12 +58,24 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
   const [loginning, setLoginning] = React.useState(false);
   const [rememberUsername, setRememberUsername] = React.useState(false);
 
+  const { data: codeRes, run: runCode } = useRequest(() => getRemoteCode(code), {
+    onSuccess: (res) => {
+      const { data: codeVal } = res;
+      code = codeVal.vid;
+    },
+    manual: true,
+  });
+
   useMount(() => {
     // 1. 生成验证码
-    const gverify = new GVerify({
-      container: gverifyRef.current,
-    });
-    setCaptcha(gverify);
+    if (!props.remoteCode) {
+      const gverify = new GVerify({
+        container: gverifyRef.current,
+      });
+      setCaptcha(gverify);
+    } else {
+      runCode();
+    }
 
     // 2. 获取是否记住用户名
     const isRememberStr = localStorage.getItem(REMEMBER_USER_KEY);
@@ -99,11 +119,25 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
     let res;
     try {
       setLoginning(true);
-      res = await login({
-        username: values.username,
-        password: md5(values.password),
-      });
-    } catch {
+
+      if (remoteCode) {
+        res = await loginWithVcode({
+          username: values.username,
+          password: md5(values.password),
+          vcode: values.code,
+          vid: codeRes.data.vid,
+        });
+      } else {
+        res = await login({
+          username: values.username,
+          password: md5(values.password),
+        });
+      }
+    } catch (error) {
+      if (remoteCode) {
+        runCode();
+      }
+
       const errorCount = getErrorCount();
       sessionStorage.setItem(PASSWORD_ERROR_COUNT, errorCount + 1);
 
@@ -118,7 +152,8 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
         }
       }
 
-      message.error('用户名或密码错误');
+      const { msg = '用户名或密码错误' } = error;
+      message.error(msg);
       return;
     } finally {
       setLoginning(false);
@@ -155,6 +190,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
     showFormIcon,
     showCopyright,
     showRememberUsername,
+    remoteCode,
   } = props;
 
   return (
@@ -204,6 +240,10 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
                 { required: true, message: '请输入验证码' },
                 {
                   validator: (rule, value) => {
+                    if (remoteCode) {
+                      return Promise.resolve();
+                    }
+
                     if (value && captcha.validate(value)) {
                       return Promise.resolve();
                     }
@@ -223,7 +263,16 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
                   />
                 </Col>
                 <Col offset={4} span={8}>
-                  <div style={{ width: '100%', height: '32px' }} ref={gverifyRef} />
+                  {remoteCode ? (
+                    <img
+                      onClick={() => runCode()}
+                      style={{ width: '100%', height: '32px', cursor: 'pointer' }}
+                      src={codeRes?.data?.img}
+                      alt="captcha"
+                    />
+                  ) : (
+                    <div style={{ width: '100%', height: '32px' }} ref={gverifyRef} />
+                  )}
                 </Col>
               </Row>
             </Form.Item>
@@ -283,6 +332,7 @@ LoginForm.defaultProps = {
   syncToken: false,
   showRememberUsername: false,
   errorTime: 0,
+  remoteCode: false,
 };
 
 export default LoginForm;
