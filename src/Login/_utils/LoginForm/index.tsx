@@ -24,6 +24,7 @@ export type CommonLoginApi = {
   onFinish?: OnFinish;
   errorTime?: number;
   remoteCode?: boolean;
+  showRememberUsername?: boolean;
 };
 
 interface LoginButtonProps {
@@ -40,7 +41,6 @@ export type LoginFormProps = {
   showCopyright?: boolean;
   title?: React.ReactElement | string;
   loginButton?: LoginButtonProps;
-  showRememberUsername?: boolean;
 } & CommonLoginApi;
 
 const defaultLoginButtonProps = {
@@ -49,6 +49,14 @@ const defaultLoginButtonProps = {
 } as LoginButtonProps;
 
 const USERNAME_KEY = 'envw_username';
+
+export const defaultLoginCommonProps = {
+  syncToken: false,
+  errorTime: 0,
+  remoteCode: false,
+  showRememberUsername: false,
+};
+
 let code = '';
 
 const LoginForm: React.FC<LoginFormProps> = (props) => {
@@ -329,10 +337,7 @@ LoginForm.defaultProps = {
   loginButton: defaultLoginButtonProps,
   theme: 'base',
   showCopyright: true,
-  syncToken: false,
-  showRememberUsername: false,
-  errorTime: 0,
-  remoteCode: false,
+  ...defaultLoginCommonProps,
 };
 
 export default LoginForm;

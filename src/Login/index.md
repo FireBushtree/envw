@@ -8,4 +8,4 @@
 | :---- | :---- | :---- | :---- | :---- | :---- |
 | onFinish | 登录成功后的回调函数 | `function(user)` | 否 | - |  |
 | syncToken | 登录成功后是否需要同步token | `boolean` | 是 | `false` |  |
-
+| remoteCode | 验证码是否从后端获取， 使用该模式登录， 调用的登录接口也会改变， 可参考[Simple](/login/simple#验证码从远端获取) | `boolean` | 否 | `false` |  |

@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginForm, { CommonLoginApi } from '@/src/Login/_utils/LoginForm';
+import LoginForm, { CommonLoginApi, defaultLoginCommonProps } from '@/src/Login/_utils/LoginForm';
 import './index.less';
 
 export type SimpleProps = CommonLoginApi & {
@@ -7,7 +7,7 @@ export type SimpleProps = CommonLoginApi & {
 };
 
 const Simple: React.FC<SimpleProps> = (props) => {
-  const { onFinish, syncToken, errorTime, remoteCode } = props;
+  const { onFinish, syncToken, errorTime, remoteCode, showRememberUsername } = props;
   let imageTimer = null;
 
   const [currentBgIndex, setCurrentBgIndex] = React.useState(0);
@@ -45,7 +45,7 @@ const Simple: React.FC<SimpleProps> = (props) => {
           remoteCode={remoteCode}
           errorTime={errorTime}
           showCopyright={false}
-          showRememberUsername
+          showRememberUsername={showRememberUsername}
           syncToken={syncToken}
           onFinish={onFinish}
           loginButton={{
@@ -62,9 +62,7 @@ const Simple: React.FC<SimpleProps> = (props) => {
 };
 
 Simple.defaultProps = {
-  syncToken: false,
-  errorTime: 0,
-  remoteCode: false,
+  ...defaultLoginCommonProps,
 };
 
 export default Simple;
