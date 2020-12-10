@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './index.less';
+import classnames from 'classnames';
 import { Breadcrumb, Layout, Menu as AntMenu, Popover, Modal } from 'antd';
 import {
   MenuUnfoldOutlined,
@@ -22,7 +23,7 @@ const { Header, Content, Sider } = Layout;
 const { SubMenu } = AntMenu;
 
 export interface MenuProps {
-  logoutPage: string;
+  onLogout: () => any;
   showSystemList?: boolean;
   staticMenu?: Array<MenuNode>;
   systemName?: string;
@@ -102,6 +103,7 @@ const Menu: React.FC<MenuProps> = (props) => {
   const tenantId = getUrlParam('tenantId');
   const systemCode = getUrlParam('systemCode');
   const {
+    onLogout,
     systemName,
     logo,
     className,
@@ -112,9 +114,11 @@ const Menu: React.FC<MenuProps> = (props) => {
     staticMenu,
     showBreadcrumb,
   } = props;
+
   const { data: user } = useRequest(getUser, {
     onError: (error) => {
-      window.location.href = props.logoutPage;
+      onLogout();
+      // window.location.href = props.logoutPage;
     },
   });
   const { name: username = '', systemList = '' } = user?.data || {};
@@ -218,7 +222,7 @@ const Menu: React.FC<MenuProps> = (props) => {
       okText: '确定',
       onOk: async () => {
         await logout();
-        window.location.href = props.logoutPage;
+        onLogout();
       },
       onCancel: () => {},
     });
@@ -292,7 +296,11 @@ const Menu: React.FC<MenuProps> = (props) => {
   return (
     <Layout className={`qw-menu ${className}`} style={{ minHeight: '100vh' }}>
       <Sider className="qw-menu-sider" width={256} trigger={null} collapsible collapsed={collapsed}>
-        <div className="qw-menu-title">
+        <div
+          className={classnames('qw-menu-title', {
+            'is-collapsed': collapsed,
+          })}
+        >
           {collapsed ? (
             generateCollapsedTitle()
           ) : (
@@ -376,7 +384,7 @@ const Menu: React.FC<MenuProps> = (props) => {
                 <Breadcrumb.Item>{currentMenu ? currentMenu.name : '首页'}</Breadcrumb.Item>
               </Breadcrumb>
 
-              <CloseOutlined onClick={() => handleCloseIframe()} />
+              {currentMenu && <CloseOutlined onClick={() => handleCloseIframe()} />}
             </div>
           )}
 

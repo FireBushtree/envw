@@ -31,7 +31,9 @@ const MenuDemo = () => (
         ],
       },
     ]}
-    logoutPage="/test"
+    onLogout={() => {
+      // TODO 跳转页面啥啥啥的
+    }}
     systemName="农村垃圾分类"
     showSystemList={false}
   />

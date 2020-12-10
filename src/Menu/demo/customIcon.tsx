@@ -19,22 +19,45 @@ const CustomIconDemo = () => {
   // </span>
 
   const [useDefaultIcon, setUseDefaultIcon] = React.useState(true);
+  const [useCustomIcon, setUseCustomIcon] = React.useState(false);
 
   return (
     <div>
       <div style={{ paddingBottom: '10px' }}>
-        <Button type="primary" onClick={() => setUseDefaultIcon(true)}>
+        <Button
+          type="primary"
+          onClick={() => {
+            setUseDefaultIcon(true);
+            setUseCustomIcon(false);
+          }}
+        >
           使用默认icon
         </Button>
-        <Button style={{ marginLeft: '10px' }} onClick={() => setUseDefaultIcon(false)}>
+        <Button
+          style={{ marginLeft: '10px' }}
+          onClick={() => {
+            setUseDefaultIcon(false);
+            setUseCustomIcon(false);
+          }}
+        >
           取消默认icon
+        </Button>
+
+        <Button style={{ marginLeft: '10px' }} onClick={() => setUseCustomIcon(true)}>
+          使用自定义Icon
         </Button>
       </div>
       <Menu
+        onLogout={() => {
+          // TODO 跳转页面啥啥啥的
+        }}
         useDefaultIcon={useDefaultIcon}
-        logoutPage="/test"
         systemName="农村垃圾分类平台"
         formatMenu={(menu) => {
+          if (!useCustomIcon) {
+            return menu;
+          }
+
           const icons = [
             <StepBackwardOutlined />,
             <BorderOuterOutlined />,
