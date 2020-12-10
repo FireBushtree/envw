@@ -18,9 +18,18 @@ import { useMount, useRequest } from 'ahooks';
 import { getUrlParam, jointQueryObject } from '../_utils/common';
 import { getMenu, getUser, logout } from '../_utils/service/auth';
 import Iframe from './_utils/Iframe';
+import FullScreen from './_utils/FullScreen';
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = AntMenu;
+
+function fullScreen() {
+  const el = document.documentElement;
+  const rfs = el.requestFullscreen;
+  if (typeof rfs !== 'undefined' && rfs) {
+    rfs.call(el);
+  }
+}
 
 export interface MenuProps {
   onLogout: () => any;
@@ -151,6 +160,23 @@ const Menu: React.FC<MenuProps> = (props) => {
   const [currentMenu, setCurrentMenu] = React.useState(null as MenuNode);
   const [iframeUrl, setIframeUrl] = React.useState('');
   const [collapsed, setCollapsed] = React.useState(false);
+  const [webFullScreen, setWebFullScreen] = React.useState(false);
+  const [windowFullScreen, setWindowFullScreen] = React.useState(false);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      const cancelFullScreen = () => {
+        if (!windowFullScreen) {
+          return;
+        }
+
+        setWindowFullScreen(false);
+        document.removeEventListener('fullscreenchange', cancelFullScreen);
+      };
+
+      document.addEventListener('fullscreenchange', cancelFullScreen);
+    }, 200);
+  }, [windowFullScreen]);
 
   const handleMenuChange = (menu: MenuNode) => {
     setCurrentMenu(menu);
@@ -322,6 +348,24 @@ const Menu: React.FC<MenuProps> = (props) => {
             )}
           </div>
           <div className="qw-menu-header-right">
+            <FullScreen
+              onWeb={() => {
+                if (!currentMenu) {
+                  return;
+                }
+
+                setWebFullScreen(true);
+              }}
+              onWindow={() => {
+                if (!currentMenu) {
+                  return;
+                }
+
+                fullScreen();
+                setWindowFullScreen(true);
+              }}
+            />
+
             <Popover
               overlayClassName="qw-menu-popover"
               placement="bottom"
@@ -389,7 +433,14 @@ const Menu: React.FC<MenuProps> = (props) => {
           )}
 
           {iframeUrl ? (
-            <Iframe url={iframeUrl} />
+            <Iframe
+              showCancel={webFullScreen}
+              onBack={() => {
+                setWebFullScreen(false);
+              }}
+              isFixed={webFullScreen || windowFullScreen}
+              url={iframeUrl}
+            />
           ) : (
             <div className="qw-menu-empty-frame">
               <img src={require('./images/welcome.png')} alt="welcome" />
