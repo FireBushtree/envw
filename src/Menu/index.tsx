@@ -19,6 +19,7 @@ import { getUrlParam, jointQueryObject } from '../_utils/common';
 import { getMenu, getUser, logout } from '../_utils/service/auth';
 import Iframe from './_utils/Iframe';
 import FullScreen from './_utils/FullScreen';
+import Theme from './_utils/Theme';
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = AntMenu;
@@ -30,6 +31,8 @@ function fullScreen() {
     rfs.call(el);
   }
 }
+
+export type MenuTheme = 'dark' | 'light';
 
 export interface MenuProps {
   onLogout: () => any;
@@ -162,6 +165,7 @@ const Menu: React.FC<MenuProps> = (props) => {
   const [collapsed, setCollapsed] = React.useState(false);
   const [webFullScreen, setWebFullScreen] = React.useState(false);
   const [windowFullScreen, setWindowFullScreen] = React.useState(false);
+  const [theme, setTheme] = React.useState<MenuTheme>('dark');
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -303,7 +307,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 
     const MenuEl = (
       <AntMenu
-        theme="dark"
+        theme={theme}
         defaultOpenKeys={defaultOpenKeys}
         defaultSelectedKeys={defaultSelectKeys}
         mode="inline"
@@ -348,6 +352,16 @@ const Menu: React.FC<MenuProps> = (props) => {
             )}
           </div>
           <div className="qw-menu-header-right">
+            <Theme
+              onChange={() => {
+                if (theme === 'light') {
+                  setTheme('dark');
+                } else {
+                  setTheme('light');
+                }
+              }}
+            />
+
             <FullScreen
               onWeb={() => {
                 if (!currentMenu) {
