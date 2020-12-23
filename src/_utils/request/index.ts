@@ -28,10 +28,11 @@ function request<T>(url: string, type: Method, data?: any, option?: Option) {
       ...option,
     };
 
-    let token = getUrlParam('token') || getAccessTokenFromStorage();
+    const token = getUrlParam('token') || getAccessTokenFromStorage();
+    let authorization = token;
 
     if (mergedOption.bearerAuth) {
-      token = `bearer ${token}`;
+      authorization = `bearer ${token}`;
     }
 
     const requestOption = {
@@ -41,7 +42,7 @@ function request<T>(url: string, type: Method, data?: any, option?: Option) {
       params: option?.params || {},
       withCredentials: true,
       headers: {
-        Authorization: token,
+        Authorization: authorization,
         access_token: token,
       },
     } as AxiosRequestConfig;

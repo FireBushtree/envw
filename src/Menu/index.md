@@ -35,7 +35,8 @@ Menu组件的属性说明如下：
 
 | 属性 | 说明 | 类型 | 必填 | 默认值 | 版本 |
 | :---- | :---- | :---- | :---- | :---- | :---- |
-| logoutPage | 退出登录后的重定向页面 | `string` | 是 | - |
+| ~~logoutPage~~ | 退出登录后的重定向页面, 已于**1.1.5-snapshot**版本废弃 | `string` | 是 | - |
+| onLogout | 退出登录后的回调函数 | `function` | 是 | - | 1.1.5-snapshot |
 | showSystemList | 是否显示右上角系统列表控件 | `boolean` | 否 | `true` |
 | onSystemChange | 系统切换时的点击事件 | `function(system)` | 否 | - |
 | staticMenu | 设置静态菜单， 设置该项后将不获取远程菜单 | `Array<Menu>` | 否 | - |

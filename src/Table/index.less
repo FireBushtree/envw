@@ -1,0 +1,27 @@
+.qw-table {
+  .ant-table-thead {
+    th {
+      color: #8c8c8c;
+      position: relative;
+    }
+
+    th[class="ant-table-cell"] + th[class="ant-table-cell"] {
+      &::after {
+        content: '';
+        position: absolute;
+        display: block;
+        width: 0;
+        height: 12px;
+        border-left: 1px dashed #8c8c8c;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+      }
+    }
+  }
+
+  .ant-table-row {
+    color: #8c8c8c;
+  }
+}
